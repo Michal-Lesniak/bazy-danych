@@ -1,0 +1,31 @@
+.tile {
+    width: 200px;
+    height: 200px;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 2rem;
+    text-align: center;
+    text-decoration: none;
+    background-color: rgba(224, 224, 224, 0.253);
+
+    a {
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    &__photo {
+        width: 120px;
+        height: 120px;
+    }
+
+    &__name {
+        
+    }
+
+    &:hover {
+        background-color: rgba(224, 224, 224, 0.137);
+        transition: .3s;
+    }   
+}

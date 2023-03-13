@@ -1,0 +1,9 @@
+<main class="tile-container">
+    <app-home-tile
+      *ngFor="let tile of tilesData"
+      [name]="tile.name"
+      [link]="tile.link"
+      [photo]="tile.photo"
+    ></app-home-tile>
+</main>
+

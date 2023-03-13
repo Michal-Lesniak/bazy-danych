@@ -1,0 +1,6 @@
+<app-header></app-header>
+<router-outlet *ngIf="backendState; else loading"></router-outlet>
+
+<ng-template #loading>
+    <h1>Ładowanie</h1>
+</ng-template>

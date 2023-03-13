@@ -24,4 +24,12 @@ mvn clean install
 mvn spring-boot:run
 ```
 ## Frontend:
-wkrótce 
+```bash
+cd frontend
+```
+```bash
+npm install
+```
+```bash
+ng serve
+```

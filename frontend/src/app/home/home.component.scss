@@ -1,0 +1,19 @@
+.tile-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+    margin: 1rem;
+    padding: 2rem;
+}
+
+@media screen and (max-width: 1194px){
+    .tile-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 630px){
+    .tile-container {
+        grid-template-columns: 1fr;
+    }
+}
