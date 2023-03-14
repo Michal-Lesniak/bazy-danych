@@ -7,7 +7,7 @@ import { HomeModule } from './modules/home.module';
 import { SharedModule } from './modules/shared.module';
 import { ConnectionService } from './services/connection.service';
 import { HttpClientModule } from '@angular/common/http';
-import { HomeTileComponent } from './home-tile/home-tile.component';
+import { CustomersModule } from './modules/customers.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +17,7 @@ import { HomeTileComponent } from './home-tile/home-tile.component';
     BrowserModule,
     AppRoutingModule,
     HomeModule,
+    CustomersModule,
     SharedModule,
     HttpClientModule
   ],

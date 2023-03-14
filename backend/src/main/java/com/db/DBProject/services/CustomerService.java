@@ -4,11 +4,9 @@ import com.db.DBProject.dto.CustomerDto;
 import com.db.DBProject.models.Customer;
 import com.db.DBProject.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +40,7 @@ public class CustomerService {
             customer.setUserCode(customerDto.userCode());
             customer.setName(customerDto.name());
             customer.setEmail(customerDto.email());
-            customer.setPhone(null);
+            customer.setPhone(customerDto.phone());
             return customer;
     }
 

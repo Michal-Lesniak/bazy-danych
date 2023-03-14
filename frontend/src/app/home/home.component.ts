@@ -10,7 +10,7 @@ import { HomeTile } from '../interfaces/home-tile';
 export class HomeComponent {
 
   public tilesData: HomeTile[] = [
-    {name: "Klienci", link: "/sprzety", photo: "https://cdn-icons-png.flaticon.com/512/921/921347.png"},
+    {name: "Klienci", link: "/customers", photo: "https://cdn-icons-png.flaticon.com/512/921/921347.png"},
     {name: "Naprawy", link: "/sprzety", photo: "https://cdn-icons-png.flaticon.com/512/3166/3166130.png"},
     {name: "Sprzęty", link: "/sprzety", photo: "https://cdn-icons-png.flaticon.com/512/3159/3159543.png"},
     {name: "Części", link: "/czesci", photo: "https://cdn-icons-png.flaticon.com/512/4350/4350670.png"}
