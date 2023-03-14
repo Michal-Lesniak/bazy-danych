@@ -25,7 +25,6 @@ public class Customer {
     private UUID id;
 
     @NotNull
-    @Column(unique = true)
     private Integer userCode;
 
     @NotNull

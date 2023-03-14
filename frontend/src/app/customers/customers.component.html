@@ -1,12 +1,14 @@
 <!-- Układ elementów do zmiany -->
-<div class="error" *ngIf="errorMessage">Błąd, użytkownik o podanym kodzie już istnieje</div>
+<div class="error" *ngIf="messageState">{{ message }}</div>
 
 <ul class="user-list">
-    <li *ngFor="let customer of customersArray">
+    <li *ngFor="let customer of customersArray; index as i">
         <div style="border: 1px solid black; margin: 1rem;">
+            <p>Kod: {{ customer.userCode }}</p>
             <p>Imie: {{ customer.name }}</p>
             <p>Telefon: {{ customer.phone }}</p>
             <p *ngIf="customer.email">Email: {{ customer.email }}</p>
+            <button type="button" (click)="deleteUser(i)">Usuń</button>
         </div>
     </li>
 </ul>

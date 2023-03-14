@@ -24,4 +24,8 @@ export class ConnectionService {
   
     return this.http.post<Customer>('http://localhost:8080/customers', JSON.stringify(body), { headers: headers });
   }
+
+  public deleteCustomer(userCode: string) {
+    return this.http.delete<boolean>(`http://localhost:8080/customers/${userCode}`);
+  }
 }

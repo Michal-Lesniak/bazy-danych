@@ -26,8 +26,11 @@ public class CustomerService {
     }
 
     @Transactional
-    public Customer addCustomer(Customer customerBody) {
-        return customerRepository.save(customerBody);
+    public Customer addCustomer(Customer customerBody) throws Exception {
+        Optional<Customer> customer = customerRepository.findByUserCode(customerBody.getUserCode());
+        if (customer.isEmpty()) {
+            return customerRepository.save(customerBody);
+        } else throw new Exception("Użytkownik istnieje");
     }
 
     @Transactional
