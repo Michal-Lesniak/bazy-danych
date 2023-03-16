@@ -31,7 +31,7 @@ public class Repair {
     @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Appliance appliance;
 
     @ManyToMany

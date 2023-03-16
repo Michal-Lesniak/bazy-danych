@@ -12,6 +12,7 @@ export class CustomersComponent implements OnInit {
   public customersArray: Customer[] = [];
   public messageState = false;
   public message = "";
+  public showForm = false;
 
   constructor(private connection: ConnectionService) {}
 
@@ -41,6 +42,7 @@ export class CustomersComponent implements OnInit {
       (data) => {
         this.getUsers();
         this.customerForm.reset();
+        this.showForm = !this.showForm;
       },
       () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
     );
@@ -63,6 +65,10 @@ export class CustomersComponent implements OnInit {
       this.messageState = false;
       this.message = "";
     }, 5000);
+  }
+
+  public showFormHandle() {
+    this.showForm = !this.showForm;
   }
 
   // TODO:

@@ -1,30 +1,45 @@
 <!-- Układ elementów do zmiany -->
 <div class="error" *ngIf="messageState">{{ message }}</div>
 
-<ul class="user-list">
-    <li *ngFor="let customer of customersArray; index as i">
-        <div style="border: 1px solid black; margin: 1rem;">
-            <p>Kod: {{ customer.userCode }}</p>
-            <p>Imie: {{ customer.name }}</p>
-            <p>Telefon: {{ customer.phone }}</p>
-            <p *ngIf="customer.email">Email: {{ customer.email }}</p>
-            <button type="button" (click)="deleteUser(i)">Usuń</button>
-        </div>
+<div class="customers">
+  <ul class="customers__list" *ngIf="customersArray.length > 0">
+    <li class="customers__list--tile">
+        <p>Kod</p>
+        <p>Imie</p>
+        <p>Telefon</p>
+        <p>Email</p>
     </li>
-</ul>
 
-<form [formGroup]="customerForm">
+    <li *ngFor="let customer of customersArray; index as i">
+      <div class="customers__list--tile">
+        <p>{{ customer.userCode }}</p>
+        <p>{{ customer.name }}</p>
+        <p>{{ customer.phone }}</p>
+        <p *ngIf="customer.email; else noEmail">{{ customer.email }}</p>
+        <button type="button" (click)="deleteUser(i)">Usuń</button>
+      </div>
+    </li>
+  </ul>
+
+  <form [formGroup]="customerForm" *ngIf="customersArray.length === 0 || showForm" class="customer__form">
     <label for="user-code">Kod użytkownika</label>
-    <input id="user-code" type="text" formControlName="userCode">
+    <input id="user-code" type="text" formControlName="userCode" />
 
     <label for="user-name">Imie</label>
-    <input id="user-name" type="text" formControlName="name">
+    <input id="user-name" type="text" formControlName="name" />
 
     <label for="user-email">Email</label>
-    <input id="user-email" type="text" formControlName="email">
+    <input id="user-email" type="text" formControlName="email" />
 
     <label for="user-phone">Nr telefonu</label>
-    <input id="user-phone" type="text" formControlName="phone">
+    <input id="user-phone" type="text" formControlName="phone" />
 
     <button [disabled]="!customerForm.valid" (click)="addUser()">Dodaj</button>
-</form>
+  </form>
+
+  <button type="button" *ngIf="customersArray.length > 0" (click)="showFormHandle()">Dodaj klienta</button>
+</div>
+
+<ng-template #noEmail>
+    <p>BRAK</p>
+</ng-template>

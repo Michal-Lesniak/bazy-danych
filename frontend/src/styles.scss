@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap");
 
+@mixin fillHeight {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -14,15 +20,15 @@ html, body {
 }
 
 app-root {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    @include fillHeight;
 }
 
 app-home {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    @include fillHeight;
     justify-content: center;
+}
+
+app-customers {
+    @include fillHeight;
 }
 

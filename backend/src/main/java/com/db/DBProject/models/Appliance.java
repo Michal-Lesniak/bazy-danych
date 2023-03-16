@@ -38,4 +38,7 @@ public class Appliance {
             orphanRemoval = true
     )
     private List<Part> part = new ArrayList<>();
+
+    @OneToMany(mappedBy = "appliance")
+    private List<Repair> repairs = new ArrayList<>();
 }
