@@ -42,7 +42,7 @@ export class CustomersComponent implements OnInit {
       (data) => {
         this.getUsers();
         this.customerForm.reset();
-        this.showForm = !this.showForm;
+        this.showForm = false;
       },
       () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
     );
