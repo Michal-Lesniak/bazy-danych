@@ -16,12 +16,12 @@
         <p>{{ customer.name }}</p>
         <p>{{ customer.phone }}</p>
         <p *ngIf="customer.email; else noEmail">{{ customer.email }}</p>
-        <button type="button" (click)="deleteUser(i)">Usuń</button>
+        <button class="deleteButton" type="button" (click)="deleteUser(i)"><mat-icon>close</mat-icon></button>
       </div>
     </li>
   </ul>
 
-  <form [formGroup]="customerForm" *ngIf="customersArray.length === 0 || showForm" class="customer__form">
+  <!-- <form [formGroup]="customerForm" *ngIf="customersArray.length === 0 || showForm" class="customer__form">
     <label for="user-code">Kod użytkownika</label>
     <input id="user-code" type="text" formControlName="userCode" />
 
@@ -35,9 +35,10 @@
     <input id="user-phone" type="text" formControlName="phone" />
 
     <button [disabled]="!customerForm.valid" (click)="addUser()">Dodaj</button>
-  </form>
+  </form> -->
 
-  <button type="button" *ngIf="customersArray.length > 0" (click)="showFormHandle()">Dodaj klienta</button>
+  <button class="addButton" type="button" *ngIf="customersArray.length > 0" 
+    (click)="openDialog()">Add Customer</button>
 </div>
 
 <ng-template #noEmail>

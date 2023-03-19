@@ -1,7 +1,9 @@
+import { NewCustomerComponent } from './new-customer/new-customer.component';
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ConnectionService } from "../services/connection.service";
 import { Customer } from "../interfaces/customer";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: "app-customers",
@@ -14,7 +16,7 @@ export class CustomersComponent implements OnInit {
   public message = "";
   public showForm = false;
 
-  constructor(private connection: ConnectionService) {}
+  constructor(private connection: ConnectionService, public dialog:MatDialog) {}
 
   ngOnInit() {
     this.getUsers();
@@ -67,9 +69,13 @@ export class CustomersComponent implements OnInit {
     }, 5000);
   }
 
-  public showFormHandle() {
-    this.showForm = !this.showForm;
+  public openDialog(): void {
+    const newCustomerRef = this.dialog.open(NewCustomerComponent);
   }
+
+  // public showFormHandle() {
+  //   this.showForm = !this.showForm;
+  // }
 
   // TODO:
   // - Wystylować elementy
