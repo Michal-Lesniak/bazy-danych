@@ -21,23 +21,11 @@
     </li>
   </ul>
 
-  <!-- <form [formGroup]="customerForm" *ngIf="customersArray.length === 0 || showForm" class="customer__form">
-    <label for="user-code">Kod użytkownika</label>
-    <input id="user-code" type="text" formControlName="userCode" />
 
-    <label for="user-name">Imie</label>
-    <input id="user-name" type="text" formControlName="name" />
+  <button class="addButton" style="margin-top: 400px;" type="button" *ngIf="customersArray.length == 0" 
+    (click)="openDialog()">Add Customer</button>
 
-    <label for="user-email">Email</label>
-    <input id="user-email" type="text" formControlName="email" />
-
-    <label for="user-phone">Nr telefonu</label>
-    <input id="user-phone" type="text" formControlName="phone" />
-
-    <button [disabled]="!customerForm.valid" (click)="addUser()">Dodaj</button>
-  </form> -->
-
-  <button class="addButton" type="button" *ngIf="customersArray.length > 0" 
+  <button class="addButton" style="margin-bottom: 2rem;" type="button" *ngIf="customersArray.length > 0" 
     (click)="openDialog()">Add Customer</button>
 </div>
 

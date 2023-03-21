@@ -38,17 +38,6 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  // public addUser() {
-  //   const formData = { ...this.customerForm.value };
-  //   this.connection.addCustomer(formData).subscribe(
-  //     (data) => {
-  //       this.getUsers();
-  //       this.customerForm.reset();
-  //       this.showForm = false;
-  //     },
-  //     () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
-  //   );
-  // }
 
   public deleteUser(index: number) {
     const userCode = this.customersArray[index].userCode;
@@ -73,12 +62,7 @@ export class CustomersComponent implements OnInit {
     const newCustomerRef = this.dialog.open(NewCustomerComponent, {
       backdropClass: 'backdropDialog',
     });
+
+    newCustomerRef.afterClosed().subscribe(()=>this.getUsers());
   }
-
-  // public showFormHandle() {
-  //   this.showForm = !this.showForm;
-  // }
-
-  // TODO:
-  // - Wystylować elementy
 }

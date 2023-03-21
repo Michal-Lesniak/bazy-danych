@@ -18,24 +18,35 @@
     display: flex;
     justify-content: center;
 }
+.deleteButton:hover{
+    background-color: aqua;
+}
 
 .addButton{
+    background-color: transparent;
     padding: 1rem;
-    border: none;
+    border-radius: 10px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.backdropDialog {
-    background-color: white;
+.addButton:hover{
+    background-color: aqua;
 }
+
+
 
 
 .customers {
-    flex-grow: 1;
+    height: 90vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     row-gap: 2rem;
 
     &__list {
+        overflow-y: auto;
         list-style: none;
         margin: 1rem;
         padding: 2rem;
