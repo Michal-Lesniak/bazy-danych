@@ -38,17 +38,17 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  public addUser() {
-    const formData = { ...this.customerForm.value };
-    this.connection.addCustomer(formData).subscribe(
-      (data) => {
-        this.getUsers();
-        this.customerForm.reset();
-        this.showForm = false;
-      },
-      () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
-    );
-  }
+  // public addUser() {
+  //   const formData = { ...this.customerForm.value };
+  //   this.connection.addCustomer(formData).subscribe(
+  //     (data) => {
+  //       this.getUsers();
+  //       this.customerForm.reset();
+  //       this.showForm = false;
+  //     },
+  //     () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
+  //   );
+  // }
 
   public deleteUser(index: number) {
     const userCode = this.customersArray[index].userCode;
@@ -70,7 +70,9 @@ export class CustomersComponent implements OnInit {
   }
 
   public openDialog(): void {
-    const newCustomerRef = this.dialog.open(NewCustomerComponent);
+    const newCustomerRef = this.dialog.open(NewCustomerComponent, {
+      backdropClass: 'backdropDialog',
+    });
   }
 
   // public showFormHandle() {

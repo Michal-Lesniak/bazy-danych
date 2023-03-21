@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
+import { ConnectionService } from 'src/app/services/connection.service';
+import { Customer } from "../../interfaces/customer";
 
 
 @Component({
@@ -8,6 +10,12 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./new-customer.component.scss']
 })
 export class NewCustomerComponent {
+  public customersArray: Customer[] = [];
+  public messageState = false;
+  public message = "";
+
+  constructor(private connection: ConnectionService){}
+
   public customerForm = new FormGroup({
     userCode: new FormControl("", [
       Validators.required,
@@ -18,5 +26,33 @@ export class NewCustomerComponent {
     phone: new FormControl("", Validators.required),
   });
 
+  public getUsers() {
+    this.connection.getCustomers().subscribe((data) => {
+      this.customersArray = data;
+    });
+  }
+
+  public addUser() {
+    const formData = { ...this.customerForm.value };
+    this.connection.addCustomer(formData).subscribe(
+      (data) => {
+        this.getUsers();
+        this.customerForm.reset();
+      },
+      () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
+    );
+  }
+
+  public handleMessage(message: string) {
+    this.messageState = true;
+    this.message = message;
+    this.getUsers();
+    setTimeout(() => {
+      this.messageState = false;
+      this.message = "";
+    }, 5000);
+  }
+
+  
 }
 
