@@ -34,13 +34,13 @@ public class Part {
     private Integer cost;
 
     @NotNull
-    private Integer count;
+    private Integer count = 0;
 
     private String photoURL;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     @NotNull
+    @JsonIgnore
     private Appliance appliance;
 
     @ManyToMany(mappedBy = "part")

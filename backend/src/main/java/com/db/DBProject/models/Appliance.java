@@ -24,7 +24,6 @@ public class Appliance {
     private UUID id;
 
     @NotNull
-    @Column(unique = true)
     private Integer applianceCode;
 
     @NotNull
