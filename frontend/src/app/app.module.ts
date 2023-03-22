@@ -8,6 +8,8 @@ import { SharedModule } from './modules/shared.module';
 import { ConnectionService } from './services/connection.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomersModule } from './modules/customers.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NewCustomerComponent } from './customers/new-customer/new-customer.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { CustomersModule } from './modules/customers.module';
     HomeModule,
     CustomersModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
   ],
   providers: [ConnectionService],
   bootstrap: [AppComponent]

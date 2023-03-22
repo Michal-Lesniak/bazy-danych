@@ -10,19 +10,47 @@
     border: 2px solid rgb(211, 85, 85);;
 }
 
+.deleteButton{
+    padding: 5px;
+    border-radius: 20%;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+}
+.deleteButton:hover{
+    background-color: aqua;
+}
+
+.addButton{
+    background-color: transparent;
+    padding: 1rem;
+    border-radius: 10px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.addButton:hover{
+    background-color: aqua;
+}
+
+
+
 
 .customers {
-    flex-grow: 1;
-    display: grid;
-    grid-template-rows: 2fr 1fr;
+    height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     row-gap: 2rem;
 
     &__list {
+        overflow-y: auto;
         list-style: none;
         margin: 1rem;
         padding: 2rem;
-        max-height: 500px;
-        overflow-y: scroll;
+        flex-grow: 1;
         
         &--tile {
             display: grid;

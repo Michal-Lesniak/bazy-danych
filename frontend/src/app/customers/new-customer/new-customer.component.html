@@ -1,0 +1,17 @@
+<div>
+    <form [formGroup]="customerForm"  class="customer__form">
+    <label for="user-code">Kod użytkownika</label>
+    <input id="user-code" type="text" formControlName="userCode" />
+
+    <label for="user-name">Imie</label>
+    <input id="user-name" type="text" formControlName="name" />
+
+    <label for="user-email">Email</label>
+    <input id="user-email" type="text" formControlName="email" />
+
+    <label for="user-phone">Nr telefonu</label>
+    <input id="user-phone" type="text" formControlName="phone" />
+
+    <button [disabled]="!customerForm.valid" mat-dialog-close (click)="addUser()">Dodaj</button>
+  </form> 
+</div>

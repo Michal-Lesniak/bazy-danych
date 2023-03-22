@@ -29,3 +29,5 @@ export class ConnectionService {
     return this.http.delete<boolean>(`http://localhost:8080/customers/${userCode}`);
   }
 }
+
+
