@@ -1,5 +1,6 @@
 package com.db.DBProject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +27,4 @@ public class Dates {
     private Date finishDate;
 
     private Date collectionDate;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "repair_id")
-    private Repair repair;
 }
