@@ -2,7 +2,7 @@ package com.db.DBProject.dto;
 
 public record PartDto(Integer partCode,
                       String name,
-                      Integer cost,
+                      Integer price,
                       Integer applianceCode,
                       String photoURL) {
 }

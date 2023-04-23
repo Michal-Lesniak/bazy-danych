@@ -36,4 +36,8 @@ public class Repair {
 
     @ManyToMany
     private List<Part> part = new ArrayList<>();
+
+    @OneToOne(mappedBy = "repair", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private Dates dates;
 }

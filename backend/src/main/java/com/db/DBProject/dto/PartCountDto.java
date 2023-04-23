@@ -2,8 +2,8 @@ package com.db.DBProject.dto;
 
 public record PartCountDto(Integer partCode,
                            String name,
-                           Integer cost,
+                           Integer price,
                            Integer applianceCode,
                            String photoURL,
-                           Integer count) {
+                           Integer amount) {
 }

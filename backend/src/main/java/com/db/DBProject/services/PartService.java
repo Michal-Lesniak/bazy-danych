@@ -30,7 +30,7 @@ public class PartService {
             Part newPart = new Part();
             newPart.setPartCode(part.partCode());
             newPart.setName(part.name());
-            newPart.setCost(part.cost());
+            newPart.setPrice(part.price());
             newPart.setAppliance(appliance.get());
             newPart.setPhotoURL(part.photoURL());
             return newPart;
@@ -41,10 +41,10 @@ public class PartService {
         return new PartCountDto(
                 part.getPartCode(),
                 part.getName(),
-                part.getCost(),
+                part.getPrice(),
                 part.getAppliance().getApplianceCode(),
                 part.getPhotoURL(),
-                part.getCount()
+                part.getAmount()
         );
     }
 

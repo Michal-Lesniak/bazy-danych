@@ -31,10 +31,10 @@ public class Part {
     private String name;
 
     @NotNull
-    private Integer cost;
+    private Integer price;
 
     @NotNull
-    private Integer count = 0;
+    private Integer amount = 0;
 
     private String photoURL;
 
