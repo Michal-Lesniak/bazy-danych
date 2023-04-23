@@ -129,6 +129,7 @@ function init() {
   const number = { iskey: false, figure: "Hexagon", color: colors.blue }
   const varchar = { iskey: false, figure: "Triangle", color: colors.red }
   const char = { iskey: false, figure: "Circle", color: colors.purple }
+  const date = { iskey: false, figure: "Square", color: colors.pink }
 
   const nodeDataArray = [
     {
@@ -146,8 +147,8 @@ function init() {
             { name: "Id", ...primaryKey},
             { name: "part_code", ...number},
             { name: "part_name", ...varchar},
-            { name: "cost", ...number },
-            { name: "count", ...number },
+            { name: "price", ...number },
+            { name: "amount", ...number },
             { name: "photo_url", ...varchar},
             { name: "appliande_id", ...foreignKey}
         ]
@@ -163,6 +164,15 @@ function init() {
         ]
     },
     {
+      key: "dates",
+      items: [
+        { name: "Id", ...primaryKey},
+        { name: "register_date",  ...date},
+        { name: "finish_date", ...date},
+        { name: "collection_date", ...date}
+      ]
+    },
+    {
         key: "customer",
         items: [
             { name: "Id", ...primaryKey},
@@ -175,6 +185,7 @@ function init() {
     {
         key: "repair_part",
         items: [
+            { name: "Id", ...primaryKey},
             { name: "repair_id", ...foreignKey},
             { name: "part_id", ...foreignKey}
         ]
@@ -187,6 +198,7 @@ function init() {
             { name: "NUMBER", ...number },
             { name: "VARCHAR2", ...varchar },
             { name: "CHAR(1)", ...char },
+            { name: "DATE", ...date }
         ]
     },
   ];
@@ -196,7 +208,8 @@ function init() {
     { from: "appliance", to: "repair", text: "1", toText: "N" },
     { from: "customer", to: "repair", text: "1", toText: "N" },
     { from: "repair", to: "repair_part", text: "1", toText: "N" },
-    { from: "part", to: "repair_part", text: "1", toText: "N" }
+    { from: "part", to: "repair_part", text: "1", toText: "N" },
+    { from: "repair", to: "dates", text: "1", toText: "1" },
   ];
 
   myDiagram.model = new go.GraphLinksModel(
