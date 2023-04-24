@@ -84,6 +84,20 @@ public class RepairService {
         return repairRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
+    public RepairDto getRepair(Integer repairCode) {
+        Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
+        if (repair.isPresent()) {
+            return mapToDto(repair.get());
+        } else throw new NotFoundException("Nie znaleziono");
+    }
+
+    public List<RepairDto> getRepairsByCustomerCode(Integer customer_code) {
+        Optional<Customer> customer = customerRepository.findByUserCode(customer_code);
+        if (customer.isPresent()) {
+            return repairRepository.findByCustomer(customer.get()).stream().map(this::mapToDto).collect(Collectors.toList());
+        } else throw new NotFoundException("Nie znaleziono");
+    }
+
     public RepairDto addRepair(AddRepairDto addRepairDto) {
         Repair repair = mapToRepair(addRepairDto);
         if (repair != null) {
