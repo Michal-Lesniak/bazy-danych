@@ -1,6 +1,5 @@
 package com.db.DBProject.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,9 +38,12 @@ public class Repair {
     private List<Part> part = new ArrayList<>();
 
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "dates_id")
-    private Dates dates;
+    @OneToMany(
+        mappedBy = "repair",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Date> dates = new ArrayList<>();
 
     public boolean getStatus() {
         return this.status;

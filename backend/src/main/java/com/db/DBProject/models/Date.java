@@ -1,6 +1,5 @@
 package com.db.DBProject.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -16,15 +14,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Dates {
+public class Date {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Repair repair;
+
     @NotNull
-    private Date registerDate;
+    private String nameOfDate;
 
-    private Date finishDate;
-
-    private Date collectionDate;
+    private java.util.Date date;
 }

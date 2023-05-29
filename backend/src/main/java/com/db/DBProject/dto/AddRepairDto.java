@@ -1,6 +1,7 @@
 package com.db.DBProject.dto;
 
-import java.util.Date;
+import com.db.DBProject.models.Date;
+
 import java.util.List;
 
 public record AddRepairDto(Integer repairCode,
@@ -8,5 +9,5 @@ public record AddRepairDto(Integer repairCode,
                            Integer customerCode,
                            Integer applianceCode,
                            List<Integer> partCodes,
-                           Date registerDate) {
+                           List<Date> listOfDate) {
 }

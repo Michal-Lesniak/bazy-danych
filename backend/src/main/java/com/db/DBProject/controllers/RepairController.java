@@ -2,6 +2,7 @@ package com.db.DBProject.controllers;
 
 import com.db.DBProject.dto.AddRepairDto;
 import com.db.DBProject.dto.RepairDto;
+import com.db.DBProject.models.Date;
 import com.db.DBProject.services.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,4 +53,39 @@ public class RepairController {
     public ResponseEntity<List<RepairDto>> deleteRepair(@PathVariable Integer repair_code) {
         return null;
     }
+
+
+    @PostMapping(value = "/repairs/{repair_code}/date")
+    public ResponseEntity<RepairDto> addDateToRepair(@PathVariable Integer repair_code, @RequestBody Date date) {
+        try {
+            RepairDto repair = repairService.getRepair(repair_code);
+            RepairDto updatedRepair =  repairService.addDateToRepair(date,repair);
+            return ResponseEntity.ok().body(updatedRepair);
+        } catch (NotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+//
+//    @DeleteMapping(value = "/repairs/{repair_code}/date")
+//    public ResponseEntity<RepairDto> getRepair(@PathVariable(value = "repair_code") Integer repairCode) {
+//        try {
+//            RepairDto repair = repairService.getRepair(repairCode);
+//            return ResponseEntity.ok().body(repair);
+//        } catch (NotFoundException e) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
+//
+//    @GetMapping(value = "/repairs/{repair_code}/date")
+//    public ResponseEntity<RepairDto> getRepair(@PathVariable(value = "repair_code") Integer repairCode) {
+//        try {
+//            RepairDto repair = repairService.getRepair(repairCode);
+//            return ResponseEntity.ok().body(repair);
+//        } catch (NotFoundException e) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//    }
+
+
+
 }
