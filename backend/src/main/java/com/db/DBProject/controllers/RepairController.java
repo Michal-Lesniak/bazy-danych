@@ -62,10 +62,11 @@ public class RepairController {
 
 
     @PostMapping(value = "/repairs/{repair_code}/date")
-    public ResponseEntity<RepairDto> addDateToRepair(@PathVariable Integer repair_code, @RequestBody DateAction dateAction) {
+    public ResponseEntity<RepairDto> addDateToRepair(@PathVariable Integer repair_code, @RequestBody DateActionDto dateActionDto) {
         try {
             RepairDto repair = repairService.getRepair(repair_code);
-            RepairDto updatedRepair =  repairService.addDateToRepair(dateAction,repair);
+            DateAction dateAction = dateActionService.mapToDateAction(dateActionDto);
+            RepairDto updatedRepair =  repairService.addDateToRepair(dateAction, repair);
             return ResponseEntity.ok().body(updatedRepair);
         } catch (NotFoundException e) {
             return ResponseEntity.badRequest().build();
