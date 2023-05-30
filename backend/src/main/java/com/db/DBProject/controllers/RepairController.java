@@ -4,6 +4,7 @@ import com.db.DBProject.dto.AddRepairDto;
 import com.db.DBProject.dto.DateActionDto;
 import com.db.DBProject.dto.RepairDto;
 import com.db.DBProject.models.DateAction;
+import com.db.DBProject.models.Repair;
 import com.db.DBProject.services.DateActionService;
 import com.db.DBProject.services.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,12 @@ public class RepairController {
     }
 
     @DeleteMapping(value = "/repairs/{repair_code}")
-    public ResponseEntity<List<RepairDto>> deleteRepair(@PathVariable Integer repair_code) {
-        return null;
+    public ResponseEntity<Boolean> deleteRepair(@PathVariable Integer repair_code) {
+        Repair repair = repairService.findOne(repair_code);
+        if (repair != null) {
+            repairService.deleteRepair(repair);
+            return ResponseEntity.ok().body(true);
+        } else return ResponseEntity.badRequest().build();
     }
 
 

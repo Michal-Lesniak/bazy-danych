@@ -18,6 +18,9 @@ public class RepairService {
     private DateActionRepository dateActionRepository;
 
     @Autowired
+    private DateActionService dateActionService;
+
+    @Autowired
     private RepairRepository repairRepository;
 
     @Autowired
@@ -47,15 +50,15 @@ public class RepairService {
                 repairDto.customerCode(),
                 repairDto.applianceCode(),
                 repairDto.partCodes(),
-                repairDto.listOfDateCode()
+                repairDto.listOfDateCode().stream().map(element -> dateActionService.getDateActionByDateCode(element)).collect(Collectors.toList())
         );
     }
 
 
 
-    private Repair mapToRepair(AddRepairDto repairDto) {
-        Optional<Customer> customer = customerRepository.findByUserCode(repairDto.customerCode());
-        Optional<Appliance> appliance = applianceRepository.findByApplianceCode(repairDto.applianceCode());
+    private Repair mapToRepair(AddRepairDto addRepairDto) {
+        Optional<Customer> customer = customerRepository.findByUserCode(addRepairDto.customerCode());
+        Optional<Appliance> appliance = applianceRepository.findByApplianceCode(addRepairDto.applianceCode());
 
         List<Part> parts = new ArrayList<>();
         List<DateAction> dateActions = new ArrayList<>();
@@ -68,27 +71,23 @@ public class RepairService {
                 applianceElement = appliance.get();
             } else throw new NoSuchElementException();
 
-            repairDto.partCodes().forEach(element -> {
+            addRepairDto.partCodes().forEach(element -> {
                 Optional<Part> part = partRepository.findByPartCode(element);
                 if (part.isPresent()) {
                     parts.add(part.get());
                 } else throw new NoSuchElementException();
             });
 
-            repairDto.listOfDateCode().forEach(element -> {
-                Optional<DateAction> date = dateActionRepository.findByDateCode(element);
-                if(date.isPresent()){
-                    dateActions.add(date.get());
-                }else throw new NoSuchElementException();
-            });
-
         } catch (NoSuchElementException e) {
             return null;
         }
 
+        addRepairDto.dateActionDtoList().forEach(element -> {
+            dateActions.add(dateActionService.mapToDateAction(element));
+        });
 
         Repair repair = new Repair();
-        repair.setRepairCode(repairDto.repairCode());
+        repair.setRepairCode(addRepairDto.repairCode());
         repair.setCustomer(customerElement);
         repair.setAppliance(applianceElement);
         repair.setPart(parts);
@@ -97,6 +96,14 @@ public class RepairService {
         return repair;
     }
 
+    public Repair findOne(Integer repairCode){
+        Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
+        return repair.orElse(null);
+    }
+
+    public void deleteRepair(Repair repair){
+        repairRepository.delete(repair);
+    }
 
     public List<RepairDto> getRepairs() {
         return repairRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
@@ -119,7 +126,12 @@ public class RepairService {
     public RepairDto addRepair(AddRepairDto addRepairDto) {
         Repair repair = mapToRepair(addRepairDto);
         if (repair != null) {
-            return mapToDto(repairRepository.save(repair));
+            Repair savedRepair = repairRepository.save(repair);
+            savedRepair.getDateActions().forEach(el -> {
+                el.setRepair(savedRepair);
+                dateActionRepository.save(el);
+            });
+            return mapToDto(savedRepair);
         } else return null;
     }
 

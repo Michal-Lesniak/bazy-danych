@@ -9,5 +9,5 @@ public record AddRepairDto(Integer repairCode,
                            Integer customerCode,
                            Integer applianceCode,
                            List<Integer> partCodes,
-                           List<Integer> listOfDateCode) {
+                           List<DateActionDto> dateActionDtoList) {
 }
