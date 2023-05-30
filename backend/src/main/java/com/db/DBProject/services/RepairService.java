@@ -3,22 +3,19 @@ package com.db.DBProject.services;
 import com.db.DBProject.dto.AddRepairDto;
 import com.db.DBProject.dto.RepairDto;
 import com.db.DBProject.models.*;
-import com.db.DBProject.repositories.ApplianceRepository;
-import com.db.DBProject.repositories.CustomerRepository;
-import com.db.DBProject.repositories.PartRepository;
-import com.db.DBProject.repositories.RepairRepository;
+import com.db.DBProject.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class RepairService {
+
+    @Autowired
+    private DateActionRepository dateActionRepository;
 
     @Autowired
     private RepairRepository repairRepository;
@@ -39,7 +36,7 @@ public class RepairService {
                 repair.getCustomer().getUserCode(),
                 repair.getAppliance().getApplianceCode(),
                 repair.getPart().stream().map(Part::getPartCode).collect(Collectors.toList()),
-                repair.getDates()
+                repair.getDateActions().stream().map(DateAction::getDateCode).collect(Collectors.toList())
                 );
     }
 
@@ -50,7 +47,7 @@ public class RepairService {
                 repairDto.customerCode(),
                 repairDto.applianceCode(),
                 repairDto.partCodes(),
-                repairDto.listOfDate()
+                repairDto.listOfDateCode()
         );
     }
 
@@ -59,8 +56,9 @@ public class RepairService {
     private Repair mapToRepair(AddRepairDto repairDto) {
         Optional<Customer> customer = customerRepository.findByUserCode(repairDto.customerCode());
         Optional<Appliance> appliance = applianceRepository.findByApplianceCode(repairDto.applianceCode());
+
         List<Part> parts = new ArrayList<>();
-        List<Date> dates = new ArrayList<>();
+        List<DateAction> dateActions = new ArrayList<>();
         Customer customerElement;
         Appliance applianceElement;
 
@@ -69,12 +67,21 @@ public class RepairService {
                 customerElement = customer.get();
                 applianceElement = appliance.get();
             } else throw new NoSuchElementException();
+
             repairDto.partCodes().forEach(element -> {
                 Optional<Part> part = partRepository.findByPartCode(element);
                 if (part.isPresent()) {
                     parts.add(part.get());
                 } else throw new NoSuchElementException();
             });
+
+            repairDto.listOfDateCode().forEach(element -> {
+                Optional<DateAction> date = dateActionRepository.findByDateCode(element);
+                if(date.isPresent()){
+                    dateActions.add(date.get());
+                }else throw new NoSuchElementException();
+            });
+
         } catch (NoSuchElementException e) {
             return null;
         }
@@ -85,7 +92,7 @@ public class RepairService {
         repair.setCustomer(customerElement);
         repair.setAppliance(applianceElement);
         repair.setPart(parts);
-        repair.setDates(repairDto.listOfDate());
+        repair.setDateActions(dateActions);
 
         return repair;
     }
@@ -116,12 +123,13 @@ public class RepairService {
         } else return null;
     }
 
-    public RepairDto addDateToRepair(Date date, RepairDto repairDto){
+    public RepairDto addDateToRepair(DateAction dateAction, RepairDto repairDto){
         AddRepairDto addRepairDto = mapToAddDtoFromDto(repairDto);
         Repair repair = mapToRepair(addRepairDto);
-        repair.getDates().add(date);
+        repair.getDateActions().add(dateAction);
         if(repair != null) {
             return mapToDto(repairRepository.save(repair));
         } else return null;
     }
+
 }

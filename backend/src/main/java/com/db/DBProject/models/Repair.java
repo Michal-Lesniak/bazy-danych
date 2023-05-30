@@ -43,7 +43,7 @@ public class Repair {
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    private List<Date> dates = new ArrayList<>();
+    private List<DateAction> dateActions = new ArrayList<>();
 
     public boolean getStatus() {
         return this.status;

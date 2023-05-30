@@ -14,10 +14,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Date {
+public class DateAction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @NotNull
+    private Integer dateCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Repair repair;

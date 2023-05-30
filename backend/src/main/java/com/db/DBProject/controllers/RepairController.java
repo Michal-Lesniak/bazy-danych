@@ -1,18 +1,24 @@
 package com.db.DBProject.controllers;
 
 import com.db.DBProject.dto.AddRepairDto;
+import com.db.DBProject.dto.DateActionDto;
 import com.db.DBProject.dto.RepairDto;
-import com.db.DBProject.models.Date;
+import com.db.DBProject.models.DateAction;
+import com.db.DBProject.services.DateActionService;
 import com.db.DBProject.services.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.webjars.NotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class RepairController {
+
+    @Autowired
+    private DateActionService dateActionService;
 
     @Autowired
     private RepairService repairService;
@@ -56,36 +62,28 @@ public class RepairController {
 
 
     @PostMapping(value = "/repairs/{repair_code}/date")
-    public ResponseEntity<RepairDto> addDateToRepair(@PathVariable Integer repair_code, @RequestBody Date date) {
+    public ResponseEntity<RepairDto> addDateToRepair(@PathVariable Integer repair_code, @RequestBody DateAction dateAction) {
         try {
             RepairDto repair = repairService.getRepair(repair_code);
-            RepairDto updatedRepair =  repairService.addDateToRepair(date,repair);
+            RepairDto updatedRepair =  repairService.addDateToRepair(dateAction,repair);
             return ResponseEntity.ok().body(updatedRepair);
         } catch (NotFoundException e) {
             return ResponseEntity.badRequest().build();
         }
     }
-//
-//    @DeleteMapping(value = "/repairs/{repair_code}/date")
-//    public ResponseEntity<RepairDto> getRepair(@PathVariable(value = "repair_code") Integer repairCode) {
-//        try {
-//            RepairDto repair = repairService.getRepair(repairCode);
-//            return ResponseEntity.ok().body(repair);
-//        } catch (NotFoundException e) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
-//
-//    @GetMapping(value = "/repairs/{repair_code}/date")
-//    public ResponseEntity<RepairDto> getRepair(@PathVariable(value = "repair_code") Integer repairCode) {
-//        try {
-//            RepairDto repair = repairService.getRepair(repairCode);
-//            return ResponseEntity.ok().body(repair);
-//        } catch (NotFoundException e) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//    }
 
-
+    @GetMapping(value = "/repairs/{repair_code}/date")
+    public ResponseEntity<List<DateActionDto>> getDates(@PathVariable(value = "repair_code") Integer repairCode) {
+        try {
+            RepairDto repair = repairService.getRepair(repairCode);
+            List<DateActionDto> dateActionDtos = new ArrayList<>();
+            repair.listOfDateCode().forEach(element ->
+                dateActionDtos.add(dateActionService.getDateActionByDateCode(element))
+        );
+            return ResponseEntity.ok().body(dateActionDtos);
+        } catch (NotFoundException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
 }
