@@ -47,6 +47,11 @@ public class DateActionService {
         return dateActionRepository.save(dateAction);
     }
 
+    public DateAction setRepairAndSave(DateAction dateAction, Repair repair) {
+        dateAction.setRepair(repair);
+        return dateActionRepository.save(dateAction);
+    }
+
     public DateActionDto getDateActionByDateCode(Integer dateCode){
         Optional<DateAction> dateAction = dateActionRepository.findByDateCode(dateCode);
         if(dateAction.isPresent()){

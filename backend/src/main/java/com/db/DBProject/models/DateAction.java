@@ -22,7 +22,10 @@ public class DateAction {
     @NotNull
     private Integer dateCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
     private Repair repair;
 
     @NotNull

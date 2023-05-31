@@ -105,11 +105,19 @@ public class RepairService {
         repairRepository.delete(repair);
     }
 
+
     public List<RepairDto> getRepairs() {
         return repairRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public RepairDto getRepair(Integer repairCode) {
+    public Repair getRepair(Integer repairCode) {
+        Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
+        if (repair.isPresent()) {
+            return repair.get();
+        } else throw new NotFoundException("Nie znaleziono");
+    }
+
+    public RepairDto getRepairDto(Integer repairCode) {
         Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
         if (repair.isPresent()) {
             return mapToDto(repair.get());

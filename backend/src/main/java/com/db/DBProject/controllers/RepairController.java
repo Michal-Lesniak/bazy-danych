@@ -32,8 +32,8 @@ public class RepairController {
     @GetMapping(value = "/repairs/{repair_code}")
     public ResponseEntity<RepairDto> getRepair(@PathVariable(value = "repair_code") Integer repairCode) {
         try {
-            RepairDto repair = repairService.getRepair(repairCode);
-            return ResponseEntity.ok().body(repair);
+            RepairDto repairDto = repairService.getRepairDto(repairCode);
+            return ResponseEntity.ok().body(repairDto);
         } catch (NotFoundException e) {
             return ResponseEntity.badRequest().build();
         }
@@ -67,12 +67,11 @@ public class RepairController {
 
 
     @PostMapping(value = "/repairs/{repair_code}/date")
-    public ResponseEntity<RepairDto> addDateToRepair(@PathVariable Integer repair_code, @RequestBody DateActionDto dateActionDto) {
+    public ResponseEntity<DateAction> addDateToRepair(@PathVariable Integer repair_code, @RequestBody DateActionDto dateActionDto) {
         try {
-            RepairDto repair = repairService.getRepair(repair_code);
+            Repair repair = repairService.getRepair(repair_code);
             DateAction dateAction = dateActionService.mapToDateAction(dateActionDto);
-            RepairDto updatedRepair =  repairService.addDateToRepair(dateAction, repair);
-            return ResponseEntity.ok().body(updatedRepair);
+            return ResponseEntity.ok().body(dateActionService.setRepairAndSave(dateAction,repair));
         } catch (NotFoundException e) {
             return ResponseEntity.badRequest().build();
         }
@@ -81,9 +80,9 @@ public class RepairController {
     @GetMapping(value = "/repairs/{repair_code}/date")
     public ResponseEntity<List<DateActionDto>> getDates(@PathVariable(value = "repair_code") Integer repairCode) {
         try {
-            RepairDto repair = repairService.getRepair(repairCode);
+            RepairDto repairDto = repairService.getRepairDto(repairCode);
             List<DateActionDto> dateActionDtos = new ArrayList<>();
-            repair.listOfDateCode().forEach(element ->
+            repairDto.listOfDateCode().forEach(element ->
                 dateActionDtos.add(dateActionService.getDateActionByDateCode(element))
         );
             return ResponseEntity.ok().body(dateActionDtos);
