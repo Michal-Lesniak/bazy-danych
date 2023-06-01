@@ -2,6 +2,7 @@ package com.db.DBProject.controllers;
 
 import com.db.DBProject.dto.ApplianceDto;
 import com.db.DBProject.services.ApplianceService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

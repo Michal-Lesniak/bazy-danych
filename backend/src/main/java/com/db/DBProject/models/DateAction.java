@@ -1,5 +1,7 @@
 package com.db.DBProject.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +24,7 @@ public class DateAction {
     @NotNull
     private Integer dateCode;
 
+    @JsonBackReference
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL

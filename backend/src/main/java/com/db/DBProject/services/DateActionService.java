@@ -5,6 +5,7 @@ import com.db.DBProject.models.DateAction;
 import com.db.DBProject.models.Repair;
 import com.db.DBProject.repositories.DateActionRepository;
 import com.db.DBProject.repositories.RepairRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -42,14 +43,41 @@ public class DateActionService {
         return dateAction;
     }
 
+    @Transactional
     public DateAction addDateAction(DateActionDto dateActionDto){
         DateAction dateAction = mapToDateAction(dateActionDto);
         return dateActionRepository.save(dateAction);
     }
 
-    public DateAction setRepairAndSave(DateAction dateAction, Repair repair) {
+    @Transactional
+    public DateAction saveDate(DateAction dateAction){
+        DateAction dateAction1 = dateActionRepository.findByDateCode(dateAction.getDateCode()).get();
+        if(dateAction1!=null){
+            throw new IllegalArgumentException("Data o takim kodzie istnieje!");
+        } else {
+            return dateActionRepository.save(dateAction);
+        }
+    }
+
+    public DateAction setRepair(DateAction dateAction, Repair repair){
         dateAction.setRepair(repair);
-        return dateActionRepository.save(dateAction);
+        return dateAction;
+    }
+
+    @Transactional
+    public DateAction setRepairAndSave(DateActionDto dateActionDto, Integer repairCode) {
+        Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
+        DateAction dateAction =  mapToDateAction(dateActionDto);
+        Optional<DateAction> dateActionInBase = dateActionRepository.findByDateCode(dateActionDto.dateCode());
+        if(repair.isPresent() && dateActionInBase.isEmpty()){
+            dateAction.setRepair(repair.get());
+            return dateActionRepository.save(dateAction);
+        }else if (dateActionInBase.isPresent()) {
+            throw new IllegalArgumentException("Data o takim kodzie istnieje w Bazie");
+        }
+        else {
+            throw new NotFoundException("Nie znaleziono Naprawy");
+        }
     }
 
     public DateActionDto getDateActionByDateCode(Integer dateCode){

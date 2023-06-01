@@ -8,6 +8,7 @@ import com.db.DBProject.models.Repair;
 import com.db.DBProject.services.DateActionService;
 import com.db.DBProject.services.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.webjars.NotFoundException;
@@ -50,10 +51,14 @@ public class RepairController {
 
     @PostMapping(value = "/repairs")
     public ResponseEntity<RepairDto> addRepair(@RequestBody AddRepairDto addRepairDto) {
-        RepairDto repairDto = repairService.addRepair(addRepairDto);
-        if (repairDto != null) {
+        try {
+            RepairDto repairDto = repairService.addRepair(addRepairDto);
             return ResponseEntity.ok().body(repairDto);
-        } else return ResponseEntity.badRequest().build();
+        }catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping(value = "/repairs/{repair_code}")
@@ -69,10 +74,8 @@ public class RepairController {
     @PostMapping(value = "/repairs/{repair_code}/date")
     public ResponseEntity<DateAction> addDateToRepair(@PathVariable Integer repair_code, @RequestBody DateActionDto dateActionDto) {
         try {
-            Repair repair = repairService.getRepair(repair_code);
-            DateAction dateAction = dateActionService.mapToDateAction(dateActionDto);
-            return ResponseEntity.ok().body(dateActionService.setRepairAndSave(dateAction,repair));
-        } catch (NotFoundException e) {
+            return ResponseEntity.ok().body(dateActionService.setRepairAndSave(dateActionDto,repair_code));
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }

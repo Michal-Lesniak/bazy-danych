@@ -4,6 +4,7 @@ import com.db.DBProject.dto.AddRepairDto;
 import com.db.DBProject.dto.RepairDto;
 import com.db.DBProject.models.*;
 import com.db.DBProject.repositories.*;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -14,8 +15,6 @@ import java.util.stream.Collectors;
 @Service
 public class RepairService {
 
-    @Autowired
-    private DateActionRepository dateActionRepository;
 
     @Autowired
     private DateActionService dateActionService;
@@ -101,6 +100,7 @@ public class RepairService {
         return repair.orElse(null);
     }
 
+    @Transactional
     public void deleteRepair(Repair repair){
         repairRepository.delete(repair);
     }
@@ -131,25 +131,27 @@ public class RepairService {
         } else throw new NotFoundException("Nie znaleziono");
     }
 
-    public RepairDto addRepair(AddRepairDto addRepairDto) {
-        Repair repair = mapToRepair(addRepairDto);
-        if (repair != null) {
-            Repair savedRepair = repairRepository.save(repair);
-            savedRepair.getDateActions().forEach(el -> {
-                el.setRepair(savedRepair);
-                dateActionRepository.save(el);
-            });
-            return mapToDto(savedRepair);
-        } else return null;
+    @Transactional
+    public Repair saveRepair(Repair repair){
+        if(repairRepository.findByRepairCode(repair.getRepairCode()).isPresent()){
+            throw new IllegalArgumentException("Naprawa o podanym kodzie istnieje");
+        } else {
+            return repairRepository.save(repair);
+        }
     }
 
-    public RepairDto addDateToRepair(DateAction dateAction, RepairDto repairDto){
-        AddRepairDto addRepairDto = mapToAddDtoFromDto(repairDto);
+    @Transactional
+    public RepairDto addRepair(AddRepairDto addRepairDto) throws Exception {
         Repair repair = mapToRepair(addRepairDto);
-        repair.getDateActions().add(dateAction);
-        if(repair != null) {
-            return mapToDto(repairRepository.save(repair));
-        } else return null;
+        if (repair != null) {
+            Repair updatedRepair = saveRepair(repair);
+            repair.getDateActions().forEach(el -> {
+                dateActionService.setRepair(el, updatedRepair);
+            });
+            return mapToDto(repair);
+        } else throw new Exception("Naprawa jest Null");
     }
+
+
 
 }

@@ -3,6 +3,7 @@ package com.db.DBProject.services;
 import com.db.DBProject.dto.ApplianceDto;
 import com.db.DBProject.models.Appliance;
 import com.db.DBProject.repositories.ApplianceRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class ApplianceService {
         return applianceRepository.findAll().stream().map(this::mapToApplianceDto).collect(Collectors.toList());
     }
 
+    @Transactional
     public Appliance saveAppliance(Appliance appliance) throws Exception {
         if (applianceRepository.findByApplianceCode(appliance.getApplianceCode()).isPresent()) throw new Exception("Sprzęt istnieje");
         else return applianceRepository.save(appliance);
