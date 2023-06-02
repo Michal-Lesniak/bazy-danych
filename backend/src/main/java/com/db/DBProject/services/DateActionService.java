@@ -51,8 +51,7 @@ public class DateActionService {
 
     @Transactional
     public DateAction saveDate(DateAction dateAction){
-        DateAction dateAction1 = dateActionRepository.findByDateCode(dateAction.getDateCode()).get();
-        if(dateAction1!=null){
+        if(dateActionRepository.findByDateCode(dateAction.getDateCode()).isPresent()){
             throw new IllegalArgumentException("Data o takim kodzie istnieje!");
         } else {
             return dateActionRepository.save(dateAction);
