@@ -1,0 +1,20 @@
+.appliance-container{
+    display: flex;
+    height: 90vh;
+    width: 100%;
+
+    &__child{
+        flex: 1;
+        border-radius: 5px;
+        box-shadow: 0 0 10px 10px rgba($color: #000000, $alpha: 0.1);
+    }
+
+    .left{
+        margin: 10px 5px 10px 10px;
+    }
+
+    .right{
+        margin: 10px 10px 10px 5px;
+    }
+
+}
