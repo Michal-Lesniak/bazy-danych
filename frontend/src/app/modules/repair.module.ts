@@ -12,6 +12,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatNativeDateModule} from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatSelectModule} from '@angular/material/select';
+import { SharedModule } from './shared.module';
 
 
 @NgModule({
@@ -30,6 +32,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule,
+    MatSelectModule,
+    SharedModule
   ]
 })
 export class RepairModule { }

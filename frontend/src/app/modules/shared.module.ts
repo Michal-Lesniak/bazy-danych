@@ -7,6 +7,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { FilterByCustomerNamePipe } from '../pipes/filter-by-customer-name.pipe';
+import { FilterByStatusPipe } from '../pipes/filter-by-status.pipe';
+import { FilterByDatePipe } from '../pipes/filter-by-date.pipe';
 
 
 
@@ -14,12 +17,17 @@ import { MatInputModule } from '@angular/material/input';
   declarations: [
     HeaderComponent,
     SearchPipe,
-    
+    FilterByCustomerNamePipe,
+    FilterByStatusPipe,
+    FilterByDatePipe
   ],
   imports: [
     CommonModule,
   ],
   exports: [HeaderComponent,
-  SearchPipe]
+  SearchPipe,
+  FilterByCustomerNamePipe,
+  FilterByStatusPipe,
+  FilterByDatePipe]
 })
 export class SharedModule { }

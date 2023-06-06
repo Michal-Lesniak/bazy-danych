@@ -5,6 +5,7 @@ import { RepairStatus } from 'src/app/interfaces/repair-status';
 import { ConnectionService } from 'src/app/services/connection.service';
 import { MatDialog } from "@angular/material/dialog";
 import { AddDateActionComponent } from './add-date-action/add-date-action.component';
+import { searchOption } from 'src/app/interfaces/searchOption';
 
 @Component({
   selector: 'app-base-repair',
@@ -16,6 +17,14 @@ export class BaseRepairComponent implements OnInit {
   public messageStateError = false;
   public messageStateComplete = false;
   public message = "";
+  public options: searchOption[] = [
+   {code: 1, name: "Nazwa Klienta"},
+   {code: 2, name: "Data"},
+   {code: 3, name: "Status"}];
+  public optionCode?: number;
+  public customerName = "";
+  public status!:boolean;
+  public date: Date | null = null;  
 
   constructor(private connection:ConnectionService, private dialog: MatDialog){}
 
@@ -29,13 +38,21 @@ export class BaseRepairComponent implements OnInit {
     });
   }
 
-  getPartsName(index:number){
-    return this.repairsArray[index].parts.map(part => part.name).join(", ");
+  getPartsName(repair:RepairDetails){
+    return repair.parts.map(part => part.name).join(", ");
   }
 
-  statusName(index:number){
-    if(this.repairsArray[index].status) return "Gotowe"
+  statusName(repair:RepairDetails){
+    if(repair.status) return "Gotowe"
     else return "W realizacji"
+  }
+
+
+  getLatestDate(repair:RepairDetails){
+    return repair.dateActionDtoList.reduce(
+      (latest, action) => 
+      latest.date > action.date ? latest : action
+    )
   }
 
   changeStatus(status:boolean, repairCode:string){
