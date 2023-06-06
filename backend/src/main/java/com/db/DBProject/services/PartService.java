@@ -49,6 +49,24 @@ public class PartService {
         );
     }
 
+    public PartDto mapToDto(Part part) {
+        return new PartDto(
+                part.getPartCode(),
+                part.getName(),
+                part.getPrice(),
+                part.getAppliance().getApplianceCode(),
+                part.getPhotoURL()
+        );
+    }
+
+    public Part findOne(Integer partCode){
+        Optional<Part> part = partRepository.findByPartCode(partCode);
+        return part.orElse(null);
+    }
+
+    @Transactional
+    public void deletePart(Part part){partRepository.delete(part);};
+
     public List<PartCountDto> getParts() {
         return partRepository.findAll().stream().map(this::mapToCountDto).collect(Collectors.toList());
     }

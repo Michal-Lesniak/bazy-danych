@@ -37,4 +37,13 @@ public class PartController {
         }
     }
 
+    @DeleteMapping(value = "parts/{part_code}")
+    public ResponseEntity<Boolean> deletePart(@PathVariable Integer part_code){
+        Part part = partService.findOne(part_code);
+        if(part != null){
+            partService.deletePart(part);
+            return ResponseEntity.ok().body(true);
+        }else return ResponseEntity.badRequest().build();
+    }
+
 }

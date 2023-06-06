@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +32,14 @@ public class ApplianceService {
                 appliance.getPhotoURL()
         );
     }
+
+    public Appliance findOne(Integer applianceCode){
+        Optional<Appliance> appliance = applianceRepository.findByApplianceCode(applianceCode);
+        return appliance.orElse(null);
+    }
+
+    @Transactional
+    public void deleteAppliance(Appliance appliance){applianceRepository.delete(appliance);}
 
     public List<ApplianceDto> getAppliances() {
         return applianceRepository.findAll().stream().map(this::mapToApplianceDto).collect(Collectors.toList());

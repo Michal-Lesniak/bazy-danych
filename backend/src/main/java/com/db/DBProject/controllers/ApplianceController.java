@@ -1,6 +1,7 @@
 package com.db.DBProject.controllers;
 
 import com.db.DBProject.dto.ApplianceDto;
+import com.db.DBProject.models.Appliance;
 import com.db.DBProject.services.ApplianceService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,14 @@ public class ApplianceController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @DeleteMapping(value = "appliances/{appliance_code}")
+    public ResponseEntity<Boolean> deleteAppliance(@PathVariable Integer appliance_code){
+        Appliance appliance = applianceService.findOne(appliance_code);
+        if(appliance != null){
+            applianceService.deleteAppliance(appliance);
+            return ResponseEntity.ok().body(true);
+        }else return ResponseEntity.badRequest().build();
     }
 }

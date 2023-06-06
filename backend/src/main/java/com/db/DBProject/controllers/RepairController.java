@@ -1,8 +1,6 @@
 package com.db.DBProject.controllers;
 
-import com.db.DBProject.dto.AddRepairDto;
-import com.db.DBProject.dto.DateActionDto;
-import com.db.DBProject.dto.RepairDto;
+import com.db.DBProject.dto.*;
 import com.db.DBProject.models.DateAction;
 import com.db.DBProject.models.Repair;
 import com.db.DBProject.services.DateActionService;
@@ -16,6 +14,7 @@ import org.webjars.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class RepairController {
 
@@ -29,6 +28,11 @@ public class RepairController {
     public ResponseEntity<List<RepairDto>> getRepairs() {
         return ResponseEntity.ok().body(repairService.getRepairs());
     }
+
+    @GetMapping(value = "/repairsDetails")
+    public ResponseEntity<List<RepairDetailsDto>> getRepairsDetail() {
+        return ResponseEntity.ok().body(repairService.getRepairsDetails());
+    };
 
     @GetMapping(value = "/repairs/{repair_code}")
     public ResponseEntity<RepairDto> getRepair(@PathVariable(value = "repair_code") Integer repairCode) {
@@ -46,6 +50,16 @@ public class RepairController {
             return ResponseEntity.ok().body(repairService.getRepairsByCustomerCode(customerCode));
         } catch (NotFoundException e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping(value = "/repairs/status")
+    public ResponseEntity<Boolean> updateStatus(@RequestBody RepairStatusDto repairStatusDto) {
+        try{
+            repairService.updateStatus(repairStatusDto);
+            return ResponseEntity.ok().body(true);
+        }catch (NotFoundException e){
+            return ResponseEntity.notFound().build();
         }
     }
 

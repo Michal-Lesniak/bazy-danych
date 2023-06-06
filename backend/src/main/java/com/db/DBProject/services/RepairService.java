@@ -1,10 +1,10 @@
 package com.db.DBProject.services;
 
-import com.db.DBProject.dto.AddRepairDto;
-import com.db.DBProject.dto.RepairDto;
+import com.db.DBProject.dto.*;
 import com.db.DBProject.models.*;
 import com.db.DBProject.repositories.*;
 import jakarta.transaction.Transactional;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -18,6 +18,15 @@ public class RepairService {
 
     @Autowired
     private DateActionService dateActionService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private PartService partService;
+
+    @Autowired
+    private ApplianceService applianceService;
 
     @Autowired
     private RepairRepository repairRepository;
@@ -40,6 +49,20 @@ public class RepairService {
                 repair.getPart().stream().map(Part::getPartCode).collect(Collectors.toList()),
                 repair.getDateActions().stream().map(DateAction::getDateCode).collect(Collectors.toList())
                 );
+    }
+
+    private RepairDetailsDto mapToDetailsDto(Repair repair){
+        CustomerDto customerDto = customerService.mapToDto(repair.getCustomer());
+        ApplianceDto applianceDto = applianceService.mapToApplianceDto(repair.getAppliance());
+
+        return new RepairDetailsDto(
+                repair.getRepairCode(),
+                repair.getStatus(),
+                applianceDto,
+                customerDto,
+                repair.getPart().stream().map(element -> partService.mapToDto(element)).collect(Collectors.toList()),
+                repair.getDateActions().stream().map(element -> dateActionService.mapToDto(element)).collect(Collectors.toList())
+        );
     }
 
     private AddRepairDto mapToAddDtoFromDto(RepairDto repairDto) {
@@ -110,6 +133,10 @@ public class RepairService {
         return repairRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
+    public List<RepairDetailsDto> getRepairsDetails() {
+        return repairRepository.findAll().stream().map(this::mapToDetailsDto).collect(Collectors.toList());
+    }
+
     public Repair getRepair(Integer repairCode) {
         Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
         if (repair.isPresent()) {
@@ -129,6 +156,18 @@ public class RepairService {
         if (customer.isPresent()) {
             return repairRepository.findByCustomer(customer.get()).stream().map(this::mapToDto).collect(Collectors.toList());
         } else throw new NotFoundException("Nie znaleziono");
+    }
+
+    @Transactional
+    public Repair updateStatus(RepairStatusDto repairStatusDto){
+        Optional<Repair> repairToUpdate = repairRepository.findByRepairCode(repairStatusDto.repairCode());
+
+        if(repairToUpdate.isEmpty()){
+            throw new NotFoundException("Nie znaleziono naprawy w Bazie");
+        }
+        Repair existingRepair = repairToUpdate.get();
+        existingRepair.setStatus(repairStatusDto.status());
+        return repairRepository.save(existingRepair);
     }
 
     @Transactional
