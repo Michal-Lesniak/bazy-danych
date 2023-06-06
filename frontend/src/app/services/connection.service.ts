@@ -7,6 +7,7 @@ import { Repair } from '../interfaces/repair';
 import { RepairDetails } from '../interfaces/repair-details';
 import { RepairStatus } from '../interfaces/repair-status';
 import { DateAction } from '../interfaces/dateAction';
+import { addRepair } from '../interfaces/addRepair';
 
 @Injectable()
 export class ConnectionService {
@@ -94,7 +95,7 @@ export class ConnectionService {
       { headers: headers });
   }
 
-  public addRepair(repair: Repair) {
+  public addRepair(repair: addRepair) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
