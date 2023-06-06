@@ -1,13 +1,35 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RepairComponent } from '../repair/repair.component';
-
+import { NewRepairComponent } from '../repair/new-repair/new-repair.component';
+import { BaseRepairComponent } from '../repair/base-repair/base-repair.component';
+import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
+import { AddDateActionComponent } from '../repair/base-repair/add-date-action/add-date-action.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatNativeDateModule} from '@angular/material/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [RepairComponent],
+  declarations: [RepairComponent,
+    NewRepairComponent,
+    BaseRepairComponent,
+    AddDateActionComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule,
+    MatIconModule,
+    MatMenuModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    FormsModule,
   ]
 })
 export class RepairModule { }

@@ -1,10 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CustomersComponent } from '../customers/customers.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import {MatIconModule} from '@angular/material/icon';
-import {MatDialogModule} from '@angular/material/dialog';
 import { NewCustomerComponent } from '../customers/new-customer/new-customer.component';
+import { SharedModule } from './shared.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -13,10 +17,15 @@ import { NewCustomerComponent } from '../customers/new-customer/new-customer.com
   declarations: [CustomersComponent,
   NewCustomerComponent],
   imports: [
+    SharedModule,
     CommonModule,
-    ReactiveFormsModule,
     MatIconModule,
+    ReactiveFormsModule,
     MatDialogModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
   ],
   exports: [CustomersComponent,
   ]

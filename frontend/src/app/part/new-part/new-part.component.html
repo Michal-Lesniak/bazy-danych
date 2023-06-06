@@ -1,0 +1,24 @@
+<div>
+    <form [formGroup]="partForm"  class="dialog__form">
+    <label for="part-code">Kod części</label>
+    <input id="part-code" type="text" formControlName="partCode" />
+
+    <label for="part-name">Nazwa</label>
+    <input id="part-name" type="text" formControlName="name" />
+
+    <label for="part-url">Cena</label>
+    <input id="part-url" type="text" formControlName="price" />
+
+    <label for="part-applianceCode">Urządzenie</label>
+    <mat-select formControlName="applianceCode">
+        <mat-option *ngFor="let appliance of appliances" [value]="appliance.applianceCode">
+          {{appliance.name}}
+        </mat-option>
+    </mat-select>    
+
+    <label for="part-url">Link do zdjęcia</label>
+    <input id="part-url" type="text" formControlName="photoURL" />
+
+    <button [disabled]="!partForm.valid" mat-dialog-close (click)="addPart()">Dodaj</button>
+  </form> 
+</div>

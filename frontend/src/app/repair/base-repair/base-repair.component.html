@@ -1,0 +1,36 @@
+<div class="repairs" style="height: 100vh;">
+  <div class="notification notification__error" *ngIf="messageStateError">{{ message }}</div>
+  <div class="notification notification__complete" *ngIf="messageStateComplete">{{message}}</div>
+    <ul class="repairs__list" *ngIf="repairsArray.length > 0">
+        <li class="repairs__list--tile">
+            <p>Kod</p>
+            <p>Status</p>
+            <p>Klient</p>
+            <p>Urządzenie</p>
+            <p>Częsci</p>
+            <p>Nazwa zdarzenia</p>
+            <p>Data</p>
+        </li>
+    
+        <li *ngFor="let repair of repairsArray; index as i">
+          <div class="repairs__list--tile">
+            <p>{{ repair.repairCode }}</p>
+            <p>{{ statusName(i) }}</p>
+            <p>{{ repair.customer.name }}</p>
+            <p>{{ repair.appliance.name }}</p>
+            <p>{{ getPartsName(i) }}</p>
+            <p>{{ repair.dateActionDtoList[repair.dateActionDtoList.length - 1].nameOfDate }}
+            <p>{{ repair.dateActionDtoList[repair.dateActionDtoList.length - 1].date | date}}</p>
+            <button mat-button [matMenuTriggerFor]="menu" class="editButton" type="button" ><mat-icon>edit</mat-icon></button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="changeStatus(!repair.status, repair.repairCode)">
+                <span>Zmień status</span>
+              </button>
+              <button mat-menu-item (click)="openDialog(repair.repairCode)" >
+                <span>Dodaj zdarzenie</span>
+              </button>
+            </mat-menu>
+          </div>
+        </li>
+      </ul>
+</div>

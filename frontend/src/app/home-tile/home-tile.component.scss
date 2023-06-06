@@ -1,7 +1,7 @@
 .tile {
     width: 200px;
     height: 200px;
-    border: 2px solid black;
+    border: none;
     border-radius: 10px;
     margin: 2rem;
     text-align: center;
@@ -20,12 +20,10 @@
         height: 120px;
     }
 
-    &__name {
-        
-    }
 
     &:hover {
-        background-color: rgba(224, 224, 224, 0.137);
+        background-color: rgba(248, 250, 248, 0.644);
         transition: .3s;
+        z-index: 10;
     }   
 }

@@ -1,0 +1,40 @@
+.repairs {
+    height: 90vh;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+
+    &__list {
+        overflow-y: auto;
+        list-style: none;
+        margin: 1rem;
+        padding: 2rem;
+        flex-grow: 1;
+        
+        &--tile {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            justify-items: center;
+            align-items: center;
+            border-bottom: 1px solid black;
+
+            p {
+                margin: 1rem;
+            }
+        }
+    }
+}
+
+
+.editButton{
+    padding: 5px;
+    border-radius: 20%;
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+}
+.editButton:hover{
+    background-color: #efeaf5;
+}

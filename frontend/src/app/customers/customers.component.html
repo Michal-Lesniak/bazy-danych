@@ -1,6 +1,6 @@
 <!-- Układ elementów do zmiany -->
-<div class="error" *ngIf="messageState">{{ message }}</div>
-
+<div class="notification notification__error" *ngIf="messageStateError">{{ message }}</div>
+<div class="notification notification__complete" *ngIf="messageStateComplete">{{ message }}</div>
 <div class="customers">
   <ul class="customers__list" *ngIf="customersArray.length > 0">
     <li class="customers__list--tile">
