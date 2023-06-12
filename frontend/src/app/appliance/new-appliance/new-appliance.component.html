@@ -1,0 +1,14 @@
+<div>
+    <form [formGroup]="applianceForm"  class="dialog__form">
+    <label for="appliance-code">Kod urządzenia</label>
+    <input id="appliance-code" type="text" formControlName="applianceCode" />
+
+    <label for="appliance-name">Nazwa</label>
+    <input id="appliance-name" type="text" formControlName="name" />
+
+    <label for="appliance-url">Link do zdjęcia</label>
+    <input id="appliance-url" type="text" formControlName="photoURL" />
+
+    <button [disabled]="!applianceForm.valid" mat-dialog-close (click)="addAppliance()">Dodaj</button>
+  </form> 
+</div>

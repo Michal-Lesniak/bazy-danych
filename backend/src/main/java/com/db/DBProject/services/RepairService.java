@@ -1,25 +1,32 @@
 package com.db.DBProject.services;
 
-import com.db.DBProject.dto.AddRepairDto;
-import com.db.DBProject.dto.RepairDto;
+import com.db.DBProject.dto.*;
 import com.db.DBProject.models.*;
-import com.db.DBProject.repositories.ApplianceRepository;
-import com.db.DBProject.repositories.CustomerRepository;
-import com.db.DBProject.repositories.PartRepository;
-import com.db.DBProject.repositories.RepairRepository;
+import com.db.DBProject.repositories.*;
 import jakarta.transaction.Transactional;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class RepairService {
+
+
+    @Autowired
+    private DateActionService dateActionService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private PartService partService;
+
+    @Autowired
+    private ApplianceService applianceService;
 
     @Autowired
     private RepairRepository repairRepository;
@@ -34,21 +41,49 @@ public class RepairService {
     private PartRepository partRepository;
 
     private RepairDto mapToDto(Repair repair) {
-        System.out.println(repair.getDates().getRegisterDate());
         return new RepairDto(
                 repair.getRepairCode(),
                 repair.getStatus(),
                 repair.getCustomer().getUserCode(),
                 repair.getAppliance().getApplianceCode(),
                 repair.getPart().stream().map(Part::getPartCode).collect(Collectors.toList()),
-                repair.getDates()
+                repair.getDateActions().stream().map(DateAction::getDateCode).collect(Collectors.toList())
                 );
     }
+
+    private RepairDetailsDto mapToDetailsDto(Repair repair){
+        CustomerDto customerDto = customerService.mapToDto(repair.getCustomer());
+        ApplianceDto applianceDto = applianceService.mapToApplianceDto(repair.getAppliance());
+
+        return new RepairDetailsDto(
+                repair.getRepairCode(),
+                repair.getStatus(),
+                applianceDto,
+                customerDto,
+                repair.getPart().stream().map(element -> partService.mapToDto(element)).collect(Collectors.toList()),
+                repair.getDateActions().stream().map(element -> dateActionService.mapToDto(element)).collect(Collectors.toList())
+        );
+    }
+
+    private AddRepairDto mapToAddDtoFromDto(RepairDto repairDto) {
+        return new AddRepairDto(
+                repairDto.repairCode(),
+                repairDto.status(),
+                repairDto.customerCode(),
+                repairDto.applianceCode(),
+                repairDto.partCodes(),
+                repairDto.listOfDateCode().stream().map(element -> dateActionService.getDateActionByDateCode(element)).collect(Collectors.toList())
+        );
+    }
+
+
 
     private Repair mapToRepair(AddRepairDto addRepairDto) {
         Optional<Customer> customer = customerRepository.findByUserCode(addRepairDto.customerCode());
         Optional<Appliance> appliance = applianceRepository.findByApplianceCode(addRepairDto.applianceCode());
+
         List<Part> parts = new ArrayList<>();
+        List<DateAction> dateActions = new ArrayList<>();
         Customer customerElement;
         Appliance applianceElement;
 
@@ -57,34 +92,59 @@ public class RepairService {
                 customerElement = customer.get();
                 applianceElement = appliance.get();
             } else throw new NoSuchElementException();
+
             addRepairDto.partCodes().forEach(element -> {
                 Optional<Part> part = partRepository.findByPartCode(element);
                 if (part.isPresent()) {
                     parts.add(part.get());
                 } else throw new NoSuchElementException();
             });
+
         } catch (NoSuchElementException e) {
             return null;
         }
 
-        Dates dates = new Dates();
-        dates.setRegisterDate(addRepairDto.registerDate());
+        addRepairDto.dateActionDtoList().forEach(element -> {
+            dateActions.add(dateActionService.mapToDateAction(element));
+        });
 
         Repair repair = new Repair();
         repair.setRepairCode(addRepairDto.repairCode());
         repair.setCustomer(customerElement);
         repair.setAppliance(applianceElement);
         repair.setPart(parts);
-        repair.setDates(dates);
+        repair.setDateActions(dateActions);
 
         return repair;
     }
+
+    public Repair findOne(Integer repairCode){
+        Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
+        return repair.orElse(null);
+    }
+
+    @Transactional
+    public void deleteRepair(Repair repair){
+        repairRepository.delete(repair);
+    }
+
 
     public List<RepairDto> getRepairs() {
         return repairRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
-    public RepairDto getRepair(Integer repairCode) {
+    public List<RepairDetailsDto> getRepairsDetails() {
+        return repairRepository.findAll().stream().map(this::mapToDetailsDto).collect(Collectors.toList());
+    }
+
+    public Repair getRepair(Integer repairCode) {
+        Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
+        if (repair.isPresent()) {
+            return repair.get();
+        } else throw new NotFoundException("Nie znaleziono");
+    }
+
+    public RepairDto getRepairDto(Integer repairCode) {
         Optional<Repair> repair = repairRepository.findByRepairCode(repairCode);
         if (repair.isPresent()) {
             return mapToDto(repair.get());
@@ -98,10 +158,39 @@ public class RepairService {
         } else throw new NotFoundException("Nie znaleziono");
     }
 
-    public RepairDto addRepair(AddRepairDto addRepairDto) {
+    @Transactional
+    public Repair updateStatus(RepairStatusDto repairStatusDto){
+        Optional<Repair> repairToUpdate = repairRepository.findByRepairCode(repairStatusDto.repairCode());
+
+        if(repairToUpdate.isEmpty()){
+            throw new NotFoundException("Nie znaleziono naprawy w Bazie");
+        }
+        Repair existingRepair = repairToUpdate.get();
+        existingRepair.setStatus(repairStatusDto.status());
+        return repairRepository.save(existingRepair);
+    }
+
+    @Transactional
+    public Repair saveRepair(Repair repair){
+        if(repairRepository.findByRepairCode(repair.getRepairCode()).isPresent()){
+            throw new IllegalArgumentException("Naprawa o podanym kodzie istnieje");
+        } else {
+            return repairRepository.save(repair);
+        }
+    }
+
+    @Transactional
+    public RepairDto addRepair(AddRepairDto addRepairDto) throws Exception {
         Repair repair = mapToRepair(addRepairDto);
         if (repair != null) {
-            return mapToDto(repairRepository.save(repair));
-        } else return null;
+            Repair updatedRepair = saveRepair(repair);
+            repair.getDateActions().forEach(el -> {
+                dateActionService.setRepair(el, updatedRepair);
+            });
+            return mapToDto(repair);
+        } else throw new Exception("Naprawa jest Null");
     }
+
+
+
 }

@@ -34,9 +34,110 @@ app-customers {
 
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: 'Roboto', sans-serif }
 
 .backdropDialog {
     background-color: rgba(255,255,255,0.7);
     backdrop-filter:blur(2px);
+}
+
+
+.dialog {
+    &__form {
+        display: flex;
+        flex-direction: column;
+        padding: 3rem;
+        label{
+            margin-top: 10px;
+        }
+        input{
+            border: none;
+            padding: 0.3rem;
+            border-bottom: 1px solid black;
+            background-color: transparent;
+            outline: none;
+        }
+        input:focus{
+            border-bottom: 1px solid #efeaf5;
+        }
+        button{
+            margin-top: 15px;
+            border-radius: 10px;
+            border: none;
+            padding: 0.3rem;
+        }
+        button:hover{
+            background-color: #efeaf5;
+        }
+        
+    }
+}
+
+.view-container{
+    display: flex;
+    height: 90vh;
+    width: 100%;
+
+    &__child{
+        flex: 1;
+        border-radius: 5px;
+        box-shadow: 0 0 10px 10px rgba($color: #000000, $alpha: 0.1);
+    }
+
+    .left{
+        margin: 20px 10px 20px 20px;
+    }
+
+    .right{
+        margin: 20px 20px 20px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+}
+
+table {
+    width: 100%;
+}
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+
+  }
+
+  .addButton{
+    background-color: transparent;
+    padding: 1rem;
+    border-radius: 10px;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.addButton:hover{
+    background-color: #efeaf5;
+}
+
+.notification{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 2%;
+    width: 300px;
+    padding: 5px;
+    border-radius: 10px;
+    text-align: center;
+
+    &__error{
+        background-color: rgba(211, 85, 85, 0.692);
+        border: 2px solid rgb(211, 85, 85);
+    }
+
+    &__complete{
+        background-color: rgba(44, 245, 4, 0.692);
+        border: 2px solid rgb(9, 221, 62);
+    }
 }

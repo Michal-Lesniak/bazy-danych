@@ -26,32 +26,32 @@ export class NewCustomerComponent {
     phone: new FormControl("", Validators.required),
   });
 
-  public getUsers() {
-    this.connection.getCustomers().subscribe((data) => {
-      this.customersArray = data;
-    });
-  }
+  // public getUsers() {
+  //   this.connection.getCustomers().subscribe((data) => {
+  //     this.customersArray = data;
+  //   });
+  // }
 
   public addUser() {
     const formData = { ...this.customerForm.value };
     this.connection.addCustomer(formData).subscribe(
       (data) => {
-        this.getUsers();
+        // this.getUsers();
         this.customerForm.reset();
       },
-      () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
+      // () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
     );
   }
 
-  public handleMessage(message: string) {
-    this.messageState = true;
-    this.message = message;
-    this.getUsers();
-    setTimeout(() => {
-      this.messageState = false;
-      this.message = "";
-    }, 5000);
-  }
+  // public handleMessage(message: string) {
+  //   this.messageState = true;
+  //   this.message = message;
+  //   this.getUsers();
+  //   setTimeout(() => {
+  //     this.messageState = false;
+  //     this.message = "";
+  //   }, 5000);
+  // }
 
   
 }

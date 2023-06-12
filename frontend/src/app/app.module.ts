@@ -9,7 +9,9 @@ import { ConnectionService } from './services/connection.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomersModule } from './modules/customers.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NewCustomerComponent } from './customers/new-customer/new-customer.component';
+import { PartsModule } from './modules/parts.module';
+import { AppliancesModule } from './modules/appliances.module';
+import { RepairModule } from './modules/repair.module';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,9 @@ import { NewCustomerComponent } from './customers/new-customer/new-customer.comp
     SharedModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    PartsModule,
+    AppliancesModule,
+    RepairModule
   ],
   providers: [ConnectionService],
   bootstrap: [AppComponent]

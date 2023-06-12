@@ -1,0 +1,25 @@
+<div>
+    <form [formGroup]="addDateActionForm" class="dialog__form">
+        <label>Kod Naprawy</label>
+        <label>{{data.repairCode}}</label>
+
+        <label>Kod Zdarzenia</label>
+        <input type="text" formControlName="dateCode">
+
+        <label>Nazwa zdarzenia</label>
+        <input type="text" formControlName="nameOfDate">
+
+        <mat-form-field class="example-full-width" 
+        style="margin-top: 10px; ">
+            <mat-label>Wybierz Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <button  [disabled]="!addDateActionForm.valid" (click)="addDateAction()">Dodaj</button>
+    </form>
+</div>

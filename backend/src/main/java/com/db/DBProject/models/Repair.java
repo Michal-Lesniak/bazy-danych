@@ -1,6 +1,7 @@
 package com.db.DBProject.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,10 +39,24 @@ public class Repair {
     @ManyToMany
     private List<Part> part = new ArrayList<>();
 
+    @JsonManagedReference
     @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "dates_id")
-    private Dates dates;
+    @OneToMany(
+        mappedBy = "repair",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<DateAction> dateActions = new ArrayList<>();
+
+    public void addDateAction(DateAction dateAction){
+        dateActions.add(dateAction);
+        dateAction.setRepair(this);
+    }
+
+    public void removeDateAction(DateAction dateAction){
+        dateActions.remove(dateAction);
+        dateAction.setRepair(null);
+    }
 
     public boolean getStatus() {
         return this.status;

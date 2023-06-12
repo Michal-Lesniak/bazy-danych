@@ -12,7 +12,8 @@ import { MatDialog } from "@angular/material/dialog";
 })
 export class CustomersComponent implements OnInit {
   public customersArray: Customer[] = [];
-  public messageState = false;
+  public messageStateError = false;
+  public messageStateComplete = false;
   public message = "";
   public showForm = false;
 
@@ -43,17 +44,21 @@ export class CustomersComponent implements OnInit {
     const userCode = this.customersArray[index].userCode;
     this.connection.deleteCustomer(userCode).subscribe((state) => {
       if (state) {
-        this.handleMessage("Usunięto");
+        this.handleMessage(false, "Usunięto");
       }
-    }, () => this.handleMessage("Wystąpił błąd podczas usuwania"));
+    }, () => this.handleMessage(true, "Wystąpił błąd podczas usuwania"));
   }
 
-  public handleMessage(message: string) {
-    this.messageState = true;
+  public handleMessage(isError:boolean, message: string) {
+    if(isError){
+      this.messageStateError = true;
+    }else this.messageStateComplete = true;
     this.message = message;
     this.getUsers();
     setTimeout(() => {
-      this.messageState = false;
+      this.messageStateError = false;
+      this.messageStateComplete = false;
+
       this.message = "";
     }, 5000);
   }
@@ -63,6 +68,6 @@ export class CustomersComponent implements OnInit {
       backdropClass: 'backdropDialog',
     });
 
-    newCustomerRef.afterClosed().subscribe(()=>this.getUsers());
+    newCustomerRef.afterClosed().subscribe(() => this.getUsers());
   }
 }

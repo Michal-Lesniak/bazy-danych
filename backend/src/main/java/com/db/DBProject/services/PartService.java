@@ -7,6 +7,7 @@ import com.db.DBProject.models.Appliance;
 import com.db.DBProject.models.Part;
 import com.db.DBProject.repositories.ApplianceRepository;
 import com.db.DBProject.repositories.PartRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,10 +49,29 @@ public class PartService {
         );
     }
 
+    public PartDto mapToDto(Part part) {
+        return new PartDto(
+                part.getPartCode(),
+                part.getName(),
+                part.getPrice(),
+                part.getAppliance().getApplianceCode(),
+                part.getPhotoURL()
+        );
+    }
+
+    public Part findOne(Integer partCode){
+        Optional<Part> part = partRepository.findByPartCode(partCode);
+        return part.orElse(null);
+    }
+
+    @Transactional
+    public void deletePart(Part part){partRepository.delete(part);};
+
     public List<PartCountDto> getParts() {
         return partRepository.findAll().stream().map(this::mapToCountDto).collect(Collectors.toList());
     }
 
+    @Transactional
     public Part savePart(Part part) throws Exception {
         if (partRepository.findByPartCode(part.getPartCode()).isPresent()) throw new Exception("Część istnieje");
         else return partRepository.save(part);

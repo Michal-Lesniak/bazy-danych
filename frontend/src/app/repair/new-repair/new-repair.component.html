@@ -1,0 +1,51 @@
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 90vh;">
+    <div class="repair">
+        <form [formGroup]="repairForm">
+            <mat-form-field>
+                <mat-label>Kod Naprawy</mat-label>
+                <input matInput formControlName="repairCode" placeholder="Enter repair code" id="repairCode" name="repairCode">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Wybierz klienta</mat-label>
+                <mat-select id="customerSelect" name="customer" formControlName="customerCode">
+                    <mat-option *ngFor="let customer of customerArray" [value]="customer.userCode">{{customer.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Wybierz urządzenie</mat-label>
+                <mat-select id="applianceSelect" name="appliance" formControlName="applianceCode">
+                    <mat-option *ngFor="let appliance of applianceArray" [value]="appliance.applianceCode">{{appliance.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Wybierz części</mat-label>
+                <mat-select multiple id="partsSelect" name="parts" formControlName="partsCode">
+                    <mat-option *ngFor="let part of partArray" [value]="part.partCode">{{part.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Kod daty</mat-label>
+                <input matInput placeholder="Enter date code" id="dateCode" name="dateCode" formControlName="dateCode">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Nazwa zdarzenia</mat-label>
+                <input matInput placeholder="Enter event name" id="eventName" name="eventName" formControlName="nameOfDate">
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Data</mat-label>
+                <input matInput [matDatepicker]="picker" id="datePicker" name="datePicker" formControlName="date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <div class="d-flex justify-content-center align-items-center p-3">
+                <button [disabled]="!repairForm.valid" class="button" (click)="addRepair()"> Dodaj Naprawe </button>
+            </div>
+        </form>  
+    </div>
+</div>

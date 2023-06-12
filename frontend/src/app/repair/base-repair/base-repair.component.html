@@ -1,0 +1,79 @@
+<div class="repairs" style="height: 90vh;">
+
+  <div class="notification notification__error" *ngIf="messageStateError">{{ message }}</div>
+  <div class="notification notification__complete" *ngIf="messageStateComplete">{{message}}</div>
+    <ul class="repairs__list" *ngIf="repairsArray.length > 0">
+
+      <div class="d-flex d-column gap-3 ">
+        <mat-form-field style="width: 200px;">
+          <mat-label>Wyszukaj po:</mat-label>
+          <mat-select [(ngModel)]="optionCode">
+            <mat-option *ngFor="let option of options" [value]="option.code">
+              {{option.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    
+        <div *ngIf="optionCode === 1"> 
+          <mat-form-field class="example-full-width">
+            <mat-label>Nazwa Klienta</mat-label>
+            <input matInput placeholder="" [(ngModel)]="customerName">
+          </mat-form-field>
+        </div>
+      
+        <div *ngIf="optionCode === 2"> 
+          <mat-form-field class="example-full-width">
+            <mat-label>Data (DD/MM/YYYY)</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+      <div *ngIf="optionCode === 3">
+        <mat-form-field>
+          <mat-label>Wybierz status:</mat-label>
+          <mat-select [(ngModel)]="status">
+            <mat-option [value]="true"> Gotowe </mat-option>
+            <mat-option [value]="false"> W realizacji </mat-option>
+            <mat-option [value]=""> Wszystkie </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    
+    
+      </div>
+
+        <li class="repairs__list--tile">
+            <p>Kod</p>
+            <p>Status</p>
+            <p>Klient</p>
+            <p>Urządzenie</p>
+            <p>Częsci</p>
+            <p>Nazwa zdarzenia</p>
+            <p>Data</p>
+        </li>
+    
+        <li *ngFor="let repair of repairsArray | filterByCustomerName: customerName 
+        | filterByStatus: status | filterByDate:date ; index as i">
+          <div class="repairs__list--tile">
+            <p>{{ repair.repairCode }}</p>
+            <p>{{ statusName(repair) }}</p>
+            <p>{{ repair.customer.name }}</p>
+            <p>{{ repair.appliance.name }}</p>
+            <p>{{ getPartsName(repair) }}</p>
+            <p>{{ getLatestDate(repair).nameOfDate }}
+            <p>{{ getLatestDate(repair).date | date}}</p>
+            <button mat-button [matMenuTriggerFor]="menu" class="editButton" type="button" ><mat-icon>edit</mat-icon></button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="changeStatus(!repair.status, repair.repairCode)">
+                <span>Zmień status</span>
+              </button>
+              <button mat-menu-item (click)="openDialog(repair.repairCode)" >
+                <span>Dodaj zdarzenie</span>
+              </button>
+            </mat-menu>
+          </div>
+        </li>
+      </ul>
+</div>
