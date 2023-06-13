@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { addRepair } from 'src/app/interfaces/addRepair';
 import { Appliance } from 'src/app/interfaces/appliance';
 import { Customer } from 'src/app/interfaces/customer';
@@ -13,7 +14,8 @@ import { ConnectionService } from 'src/app/services/connection.service';
 })
 export class NewRepairComponent implements OnInit {
 
-  constructor(private connection:ConnectionService){}
+  constructor(private connection:ConnectionService,
+    private router:Router){}
 
   customerArray: Customer[] = [];
   applianceArray: Appliance[] = [];
@@ -64,7 +66,12 @@ export class NewRepairComponent implements OnInit {
   };
 
     this.connection.addRepair(newRepair).subscribe(
-      data => console.log(data)
+      data => {
+        this.repairForm.reset;
+        this.router.navigate(['/repairs/base'])
+        // this.dialogRef.close(true)
+      }, 
+      // () => this.dialogRef.close(false)
     )
   }
 
