@@ -1,7 +1,9 @@
 <div>
     <form [formGroup]="applianceForm"  class="dialog__form">
     <label for="appliance-code">Kod urządzenia</label>
-    <input id="appliance-code" type="text" formControlName="applianceCode" />
+    <input id="appliance-code" style="position: relative;" type="text" formControlName="applianceCode" />
+    <button class="p-3"  style="border: none; background-color: transparent; position: absolute; right: 0; margin-right: 35px;" 
+    (click)="setFreeApplianceCode()" matSuffix mat-icon-button ><mat-icon class="border: none;">border_color</mat-icon></button>
 
     <label for="appliance-name">Nazwa</label>
     <input id="appliance-name" type="text" formControlName="name" />

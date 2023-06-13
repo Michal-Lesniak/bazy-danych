@@ -7,6 +7,7 @@
             <mat-form-field>
                 <mat-label>Kod Naprawy</mat-label>
                 <input matInput formControlName="repairCode" placeholder="Enter repair code" id="repairCode" name="repairCode">
+                <button class="p-3"  style="border: none; background-color: transparent;" (click)="setFreeRepairCode()" matSuffix mat-icon-button ><mat-icon class="border: none;">border_color</mat-icon></button>
             </mat-form-field>
 
             <mat-form-field>
@@ -33,6 +34,7 @@
             <mat-form-field>
                 <mat-label>Kod daty</mat-label>
                 <input matInput placeholder="Enter date code" id="dateCode" name="dateCode" formControlName="dateCode">
+                <button class="p-3"  style="border: none; background-color: transparent;" (click)="setFreeDateCode()" matSuffix mat-icon-button ><mat-icon class="border: none;">border_color</mat-icon></button>
             </mat-form-field>
 
             <mat-form-field>

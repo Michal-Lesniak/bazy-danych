@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { ConnectionService } from 'src/app/services/connection.service';
 import { Customer } from "../../interfaces/customer";
 import { MatDialogRef } from '@angular/material/dialog';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class NewCustomerComponent {
 
   public addUser() {
     const formData = { ...this.customerForm.value };
-    this.connection.addCustomer(formData).subscribe(
+    this.connection.addCustomer(formData).pipe(take(1)).subscribe(
       (data) => {
         this.dialogRef.close(true)
         this.customerForm.reset();
@@ -41,7 +42,11 @@ export class NewCustomerComponent {
     );
   }
 
-
+  setFreeCustomerCode(){
+    this.connection.getFreeCustomerCode().pipe(take(1)).subscribe(data => {
+      this.customerForm.get('userCode')?.setValue(String(data));
+    })
+  }
 
   
 }

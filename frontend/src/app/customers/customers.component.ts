@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ConnectionService } from "../services/connection.service";
 import { Customer } from "../interfaces/customer";
 import { MatDialog } from "@angular/material/dialog";
+import { take } from 'rxjs';
 
 @Component({
   selector: "app-customers",
@@ -34,7 +35,7 @@ export class CustomersComponent implements OnInit {
   });
 
   public getUsers() {
-    this.connection.getCustomers().subscribe((data) => {
+    this.connection.getCustomers().pipe(take(1)).subscribe((data) => {
       this.customersArray = data;
     });
   }

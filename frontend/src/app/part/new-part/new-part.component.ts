@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ConnectionService } from 'src/app/services/connection.service';
 import { Appliance } from 'src/app/interfaces/appliance';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class NewPartComponent implements OnInit{
   constructor(public dialogRef: MatDialogRef<NewPartComponent>, private connection:ConnectionService){}
 
   ngOnInit(): void {
-    this.connection.getAppliances().subscribe( data => this.appliances = data);
+    this.connection.getAppliances().pipe(take(1)).subscribe( data => this.appliances = data);
   }
 
   public partForm = new FormGroup({
@@ -35,7 +36,7 @@ export class NewPartComponent implements OnInit{
   public addPart(){
     const formData = {...this.partForm.value};
     console.log(formData);
-    this.connection.addPart(formData).subscribe(
+    this.connection.addPart(formData).pipe(take(1)).subscribe(
     (data) => {
       this.dialogRef.close(true)
       this.partForm.reset();
@@ -43,4 +44,10 @@ export class NewPartComponent implements OnInit{
     () => this.dialogRef.close(false)
     );
   }
+
+  setFreePartCode(){
+    this.connection.getFreePartCode().pipe(take(1)).subscribe(data => 
+      this.partForm.get('partCode')?.setValue(String(data)))
+  }
+
 }

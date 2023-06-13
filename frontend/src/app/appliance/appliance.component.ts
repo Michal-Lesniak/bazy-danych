@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ConnectionService } from '../services/connection.service';
 import { MatDialog } from "@angular/material/dialog";
 import { NewApplianceComponent } from './new-appliance/new-appliance.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, take } from 'rxjs';
 
 
 @Component({
@@ -38,7 +38,7 @@ export class ApplianceComponent implements OnInit {
   };
 
   getAppliances() {
-    this.connection.getAppliances().subscribe(
+    this.connection.getAppliances().pipe(take(1)).subscribe(
       data => this.appliances = data
     )
   }

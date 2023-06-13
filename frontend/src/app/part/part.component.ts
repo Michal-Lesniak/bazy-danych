@@ -3,6 +3,7 @@ import { ConnectionService } from '../services/connection.service';
 import { MatDialog } from "@angular/material/dialog";
 import { Part } from '../interfaces/part';
 import { NewPartComponent } from './new-part/new-part.component';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -42,7 +43,7 @@ export class PartComponent implements OnInit{
   };
 
   getParts() {
-    this.connection.getParts().subscribe(
+    this.connection.getParts().pipe(take(1)).subscribe(
       data => this.parts = data
     )
   }
@@ -53,13 +54,13 @@ export class PartComponent implements OnInit{
     });
 
     newPartRef.afterClosed().subscribe(result => {
-
+      this.getParts()
       if(result === true){
         this.handleMessage(false, "Urządzenie zostało pomyślnie dodane.")
       }else if(result === false){
         this.handleMessage(true, "Urządzenie o podanym kodzie już istnieje.")
       }
-      this.getParts()
+      
     });
   }
 

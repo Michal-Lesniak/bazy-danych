@@ -6,6 +6,7 @@ import { ConnectionService } from 'src/app/services/connection.service';
 import { MatDialog } from "@angular/material/dialog";
 import { AddDateActionComponent } from './add-date-action/add-date-action.component';
 import { searchOption } from 'src/app/interfaces/searchOption';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-base-repair',
@@ -33,7 +34,7 @@ export class BaseRepairComponent implements OnInit {
   }
 
   getRepairsDetails(){
-    this.connection.getRepairsDetails().subscribe( data => {
+    this.connection.getRepairsDetails().pipe(take(1)).subscribe( data => {
       this.repairsArray = data;
     });
   }
