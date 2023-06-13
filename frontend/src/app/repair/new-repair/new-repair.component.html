@@ -23,7 +23,7 @@
             <mat-form-field>
                 <mat-label>Wybierz części</mat-label>
                 <mat-select multiple id="partsSelect" name="parts" formControlName="partsCode">
-                    <mat-option *ngFor="let part of partArray" [value]="part.partCode">{{part.name}}</mat-option>
+                    <mat-option *ngFor="let part of partArray"   [value]="part.partCode">{{part.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -44,7 +44,7 @@
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
             <div class="d-flex justify-content-center align-items-center p-3">
-                <button [disabled]="!repairForm.valid" class="button" (click)="addRepair()"> Dodaj Naprawe </button>
+                <button [disabled]="!repairForm.valid" nav class="button" (click)="addRepair()"> Dodaj Naprawe </button>
             </div>
         </form>  
     </div>
