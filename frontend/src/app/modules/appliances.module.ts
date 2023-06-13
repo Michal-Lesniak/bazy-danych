@@ -8,6 +8,7 @@ import { NewApplianceComponent } from '../appliance/new-appliance/new-appliance.
 import { SharedModule } from './shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [ApplianceComponent,
@@ -20,7 +21,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatTableModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
   exports: [  ]
 })

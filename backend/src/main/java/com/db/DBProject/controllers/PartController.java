@@ -22,6 +22,11 @@ public class PartController {
         return ResponseEntity.ok().body(partService.getParts());
     }
 
+    @GetMapping(value = "parts/freeCode")
+    public ResponseEntity<Integer> getFirstFreeCode(){
+        return ResponseEntity.ok().body(partService.fingFirstFreePartCode());
+    }
+
     @PostMapping(value = "parts")
     public ResponseEntity<PartCountDto> addPart(@RequestBody PartDto partBody) {
         try {

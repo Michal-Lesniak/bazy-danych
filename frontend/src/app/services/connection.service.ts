@@ -23,6 +23,10 @@ export class ConnectionService {
     return this.http.get<Customer[]>('http://localhost:8080/customers');
   }
 
+  public getFreeCustomerCode(){
+    return this.http.get<number>('http://localhost:8080/customers/freeCode');
+  }
+
   public addCustomer(body: any) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -40,6 +44,10 @@ export class ConnectionService {
   /****************** APPLIANCES ********************/
   public getAppliances() {
     return this.http.get<Appliance[]>('http://localhost:8080/appliances');
+  }
+
+  public getFreeApplianceCode(){
+    return this.http.get<number>('http://localhost:8080/appliances/freeCode');
   }
 
   public addAppliance(body: any) {
@@ -60,6 +68,10 @@ export class ConnectionService {
     return this.http.get<Part[]>('http://localhost:8080/parts');
   }
 
+  public getFreePartCode(){
+    return this.http.get<number>('http://localhost:8080/parts/freeCode');
+  }
+
   public addPart(body: any) {
     const headers = new HttpHeaders({
       'Content-type': 'application/json',
@@ -78,6 +90,10 @@ export class ConnectionService {
 
   public getRepairs() {
     return this.http.get<Repair[]>('http://localhost:8080/repairs');
+  }
+
+  public getFreeRepairCode(){
+    return this.http.get<number>('http://localhost:8080/repairs/freeCode');
   }
 
   public getRepairsDetails() {
@@ -106,6 +122,8 @@ export class ConnectionService {
       { headers: headers });
   }
 
+   /****************** DateAction ********************/
+
   public addDateActionToRepair(dateAction:any){
      const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -118,6 +136,11 @@ export class ConnectionService {
                 {headers: headers })
 
     }
+
+    public getFreeDateCode(){
+      return this.http.get<number>('http://localhost:8080/dates/freeCode');
+    }
+ 
 }
 
 

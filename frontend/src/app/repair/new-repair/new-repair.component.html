@@ -1,9 +1,13 @@
-<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 90vh;">
+<div class="notification notification__error" *ngIf="messageStateError">{{ message }}</div>
+<div class="notification notification__complete" *ngIf="messageStateComplete">{{ message }}</div>
+<div class="position-relative container-fluid d-flex justify-content-center align-items-center" style="height: 90vh;">
+    <div class="position-absolute top-0 start-0 m-4 p-3" style="--bs-link-color-rgb: 0, 0, 0;transform: scale(1.5);"><a href="/repairs"><mat-icon>arrow_back_ios</mat-icon></a></div>
     <div class="repair">
         <form [formGroup]="repairForm">
             <mat-form-field>
                 <mat-label>Kod Naprawy</mat-label>
                 <input matInput formControlName="repairCode" placeholder="Enter repair code" id="repairCode" name="repairCode">
+                <button class="p-3"  style="border: none; background-color: transparent;" (click)="setFreeRepairCode()" matSuffix mat-icon-button ><mat-icon class="border: none;">border_color</mat-icon></button>
             </mat-form-field>
 
             <mat-form-field>
@@ -23,13 +27,14 @@
             <mat-form-field>
                 <mat-label>Wybierz części</mat-label>
                 <mat-select multiple id="partsSelect" name="parts" formControlName="partsCode">
-                    <mat-option *ngFor="let part of partArray"   [value]="part.partCode">{{part.name}}</mat-option>
+                    <mat-option *ngFor="let part of partArray | filterPartsByAppliance: repairForm.value.applianceCode"   [value]="part.partCode">{{part.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Kod daty</mat-label>
                 <input matInput placeholder="Enter date code" id="dateCode" name="dateCode" formControlName="dateCode">
+                <button class="p-3"  style="border: none; background-color: transparent;" (click)="setFreeDateCode()" matSuffix mat-icon-button ><mat-icon class="border: none;">border_color</mat-icon></button>
             </mat-form-field>
 
             <mat-form-field>

@@ -17,12 +17,17 @@ public class ApplianceController {
     @Autowired
     private ApplianceService applianceService;
 
-    @GetMapping(value = "appliances")
+    @GetMapping(value = "/appliances")
     public ResponseEntity<List<ApplianceDto>> getAppliances() {
         return ResponseEntity.ok().body(applianceService.getAppliances());
     }
 
-    @PostMapping(value = "appliances")
+    @GetMapping(value = "/appliances/freeCode")
+    public ResponseEntity<Integer> getFirstFreeCode(){
+        return ResponseEntity.ok().body(applianceService.returnFirstFreeApplianceCode());
+    }
+
+    @PostMapping(value = "/appliances")
     public ResponseEntity<ApplianceDto> addAppliance(@RequestBody ApplianceDto applianceBody) {
         try {
             return ResponseEntity.ok().body(

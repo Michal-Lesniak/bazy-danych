@@ -1,8 +1,10 @@
 <div>
     <form [formGroup]="partForm"  class="dialog__form">
     <label for="part-code">Kod części</label>
-    <input id="part-code" type="text" formControlName="partCode" />
-
+    <input id="part-code" style="position: relative;" type="text" formControlName="partCode" />
+    <button class="p-3"  style="border: none; background-color: transparent; position: absolute; right: 0; margin-right: 35px;" 
+    (click)="setFreePartCode()" matSuffix mat-icon-button ><mat-icon class="border: none;">border_color</mat-icon></button>
+    
     <label for="part-name">Nazwa</label>
     <input id="part-name" type="text" formControlName="name" />
 

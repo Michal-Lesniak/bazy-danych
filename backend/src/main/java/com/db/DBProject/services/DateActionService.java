@@ -10,7 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class DateActionService {
@@ -27,6 +31,20 @@ public class DateActionService {
                 dateAction.getRepair().getRepairCode(),
                 dateAction.getNameOfDate(),
                 dateAction.getDate());
+    }
+
+    public Integer findFirstFreeDateCode(){
+        List<DateAction> dateActionList = dateActionRepository.findAll();
+
+        Set<Integer> codes = dateActionList.stream().map(DateAction::getDateCode).collect(Collectors.toSet());
+
+        for(int i = 1; i < Collections.max(codes); i++ ){
+            if(!codes.contains(i)){
+                return i;
+            }
+        }
+
+        return Collections.max(codes) + 1;
     }
 
     public DateAction mapToDateAction(DateActionDto dateActionDto){

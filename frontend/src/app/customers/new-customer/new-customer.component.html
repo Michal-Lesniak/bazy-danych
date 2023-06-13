@@ -1,7 +1,10 @@
 <div>
     <form [formGroup]="customerForm"  class="customer__form">
     <label for="user-code">Kod użytkownika</label>
-    <input id="user-code" type="text" formControlName="userCode" />
+    <input id="user-code" style="position: relative;" type="text" formControlName="userCode" />
+    <button class="p-3"  style="border: none; background-color: transparent; position: absolute; right: 0; margin-right: 35px;" 
+    (click)="setFreeCustomerCode()" matSuffix mat-icon-button ><mat-icon class="border: none;">border_color</mat-icon></button>
+
 
     <label for="user-name">Imie</label>
     <input id="user-name" type="text" formControlName="name" />

@@ -2,6 +2,7 @@ import { DialogRef } from '@angular/cdk/dialog';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { take } from 'rxjs';
 import { ConnectionService } from 'src/app/services/connection.service';
 
 @Component({
@@ -23,13 +24,19 @@ export class NewApplianceComponent {
   
   public addAppliance(){
     const formData = {...this.applianceForm.value};
-    this.connection.addAppliance(formData).subscribe(
+    this.connection.addAppliance(formData).pipe(take(1)).subscribe(
     (data) => {
       this.dialogRef.close(true)
       this.applianceForm.reset();
     },
     () => this.dialogRef.close(false)
     );
+  }
+
+  setFreeApplianceCode(){
+    this.connection.getFreeApplianceCode().pipe(take(1)).subscribe(data => {
+      this.applianceForm.get('applianceCode')?.setValue(String(data));
+    })
   }
 
 }

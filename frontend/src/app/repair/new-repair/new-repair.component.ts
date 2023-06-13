@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 import { addRepair } from 'src/app/interfaces/addRepair';
 import { Appliance } from 'src/app/interfaces/appliance';
 import { Customer } from 'src/app/interfaces/customer';
@@ -24,6 +25,10 @@ export class NewRepairComponent implements OnInit {
   dateCode: string = "";
   nameOfDate: string = "";
   date:Date | null = null;
+  public messageStateError = false;
+  public messageStateComplete = false;
+  public message = "";
+ 
 
   public repairForm = new FormGroup({
     repairCode: new FormControl("", [ 
@@ -40,9 +45,9 @@ export class NewRepairComponent implements OnInit {
 
 
   ngOnInit(): void {
-      this.connection.getCustomers().subscribe((data) => this.customerArray = data);
-      this.connection.getAppliances().subscribe((data) => this.applianceArray = data);
-      this.connection.getParts().subscribe((data) => this.partArray = data);
+      this.connection.getCustomers().pipe(take(1)).subscribe((data) => this.customerArray = data);
+      this.connection.getAppliances().pipe(take(1)).subscribe((data) => this.applianceArray = data);
+      this.connection.getParts().pipe(take(1)).subscribe((data) => this.partArray = data);
   }
 
 
@@ -69,10 +74,35 @@ export class NewRepairComponent implements OnInit {
       data => {
         this.repairForm.reset;
         this.router.navigate(['/repairs/base'])
-        // this.dialogRef.close(true)
       }, 
-      // () => this.dialogRef.close(false)
+      () => this.handleMessage(true, "Wystąpił Błąd. Spróbuj ponownie!")
     )
+  }
+
+  handleMessage(error: boolean, message: string) {
+    if (error) {
+      this.messageStateError = true;
+    } else  {
+      this.messageStateComplete = true;
+    }
+    this.message = message;
+    setTimeout(() => {
+      this.messageStateError = false;
+      this.messageStateComplete = false;
+    }, 3000)
+  }
+
+  setFreeRepairCode(){
+    this.connection.getFreeRepairCode().pipe(take(1)).subscribe(data => {
+      this.repairForm.get('repairCode')?.setValue(String(data));
+    }
+      );
+  }
+
+  setFreeDateCode(){
+    this.connection.getFreeDateCode().pipe(take(1)).subscribe(data => {
+      this.repairForm.get('dateCode')?.setValue(String(data));
+    })
   }
 
 }

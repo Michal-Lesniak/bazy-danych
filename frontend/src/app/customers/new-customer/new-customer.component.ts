@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { ConnectionService } from 'src/app/services/connection.service';
 import { Customer } from "../../interfaces/customer";
+import { MatDialogRef } from '@angular/material/dialog';
+import { take } from 'rxjs';
 
 
 @Component({
@@ -14,7 +16,8 @@ export class NewCustomerComponent {
   public messageState = false;
   public message = "";
 
-  constructor(private connection: ConnectionService){}
+  constructor(private connection: ConnectionService,
+    public dialogRef: MatDialogRef<NewCustomerComponent> ){}
 
   public customerForm = new FormGroup({
     userCode: new FormControl("", [
@@ -26,32 +29,24 @@ export class NewCustomerComponent {
     phone: new FormControl("", Validators.required),
   });
 
-  // public getUsers() {
-  //   this.connection.getCustomers().subscribe((data) => {
-  //     this.customersArray = data;
-  //   });
-  // }
+
 
   public addUser() {
     const formData = { ...this.customerForm.value };
-    this.connection.addCustomer(formData).subscribe(
+    this.connection.addCustomer(formData).pipe(take(1)).subscribe(
       (data) => {
-        // this.getUsers();
+        this.dialogRef.close(true)
         this.customerForm.reset();
       },
-      // () => this.handleMessage("Użytkownik o podanym kodzie już istnieje")
+      () => this.dialogRef.close(false)
     );
   }
 
-  // public handleMessage(message: string) {
-  //   this.messageState = true;
-  //   this.message = message;
-  //   this.getUsers();
-  //   setTimeout(() => {
-  //     this.messageState = false;
-  //     this.message = "";
-  //   }, 5000);
-  // }
+  setFreeCustomerCode(){
+    this.connection.getFreeCustomerCode().pipe(take(1)).subscribe(data => {
+      this.customerForm.get('userCode')?.setValue(String(data));
+    })
+  }
 
   
 }

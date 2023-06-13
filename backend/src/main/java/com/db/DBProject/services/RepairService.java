@@ -123,10 +123,24 @@ public class RepairService {
         return repair.orElse(null);
     }
 
+    public Integer findFirstFreeRepairCode(){
+        List<Repair> repairs = repairRepository.findAll();
+        Set<Integer> codes = repairs.stream().map(Repair::getRepairCode).collect(Collectors.toSet());
+
+        for(int i = 1; i < Collections.max(codes); i++){
+            if(!codes.contains(i)){
+                return i;
+            }
+        }
+
+        return Collections.max(codes) + 1;
+    }
+
     @Transactional
     public void deleteRepair(Repair repair){
         repairRepository.delete(repair);
     }
+
 
 
     public List<RepairDto> getRepairs() {
