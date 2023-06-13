@@ -68,6 +68,14 @@ export class CustomersComponent implements OnInit {
       backdropClass: 'backdropDialog',
     });
 
-    newCustomerRef.afterClosed().subscribe(() => this.getUsers());
+    newCustomerRef.afterClosed().subscribe((result => {
+
+      if(result === true){
+        this.handleMessage(false, "Klient został pomyślnie dodany.")
+      }else if(result === false){
+        this.handleMessage(true, "Klient o podanym kodzie już istnieje.")
+      }
+      this.getUsers()
+    }))
   }
 }

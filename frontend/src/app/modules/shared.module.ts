@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FilterByCustomerNamePipe } from '../pipes/filter-by-customer-name.pipe';
 import { FilterByStatusPipe } from '../pipes/filter-by-status.pipe';
 import { FilterByDatePipe } from '../pipes/filter-by-date.pipe';
+import { FilterPartsByAppliancePipe } from '../pipes/filter-parts-by-appliance.pipe';
 
 
 
@@ -19,7 +20,8 @@ import { FilterByDatePipe } from '../pipes/filter-by-date.pipe';
     SearchPipe,
     FilterByCustomerNamePipe,
     FilterByStatusPipe,
-    FilterByDatePipe
+    FilterByDatePipe,
+    FilterPartsByAppliancePipe
   ],
   imports: [
     CommonModule,
@@ -28,6 +30,7 @@ import { FilterByDatePipe } from '../pipes/filter-by-date.pipe';
   SearchPipe,
   FilterByCustomerNamePipe,
   FilterByStatusPipe,
-  FilterByDatePipe]
+  FilterByDatePipe,
+  FilterPartsByAppliancePipe]
 })
 export class SharedModule { }

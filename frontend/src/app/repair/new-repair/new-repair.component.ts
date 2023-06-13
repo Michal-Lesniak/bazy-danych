@@ -24,6 +24,9 @@ export class NewRepairComponent implements OnInit {
   dateCode: string = "";
   nameOfDate: string = "";
   date:Date | null = null;
+  public messageStateError = false;
+  public messageStateComplete = false;
+  public message = "";
 
   public repairForm = new FormGroup({
     repairCode: new FormControl("", [ 
@@ -69,10 +72,22 @@ export class NewRepairComponent implements OnInit {
       data => {
         this.repairForm.reset;
         this.router.navigate(['/repairs/base'])
-        // this.dialogRef.close(true)
       }, 
-      // () => this.dialogRef.close(false)
+      () => this.handleMessage(true, "Wystąpił Błąd. Spróbuj ponownie!")
     )
+  }
+
+  handleMessage(error: boolean, message: string) {
+    if (error) {
+      this.messageStateError = true;
+    } else  {
+      this.messageStateComplete = true;
+    }
+    this.message = message;
+    setTimeout(() => {
+      this.messageStateError = false;
+      this.messageStateComplete = false;
+    }, 3000)
   }
 
 }
