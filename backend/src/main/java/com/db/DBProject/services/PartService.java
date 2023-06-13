@@ -11,9 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +60,19 @@ public class PartService {
     public Part findOne(Integer partCode){
         Optional<Part> part = partRepository.findByPartCode(partCode);
         return part.orElse(null);
+    }
+
+    public Integer fingFirstFreePartCode(){
+        List<Part> parts = partRepository.findAll();
+        Set<Integer> codes = parts.stream().map(Part::getPartCode).collect(Collectors.toSet());
+
+        for(int i = 1; i < Collections.max(codes); i++){
+            if(!codes.contains(i)){
+                return i;
+            }
+        }
+
+        return Collections.max(codes) + 1;
     }
 
     @Transactional

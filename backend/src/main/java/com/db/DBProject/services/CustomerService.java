@@ -7,8 +7,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -23,6 +26,19 @@ public class CustomerService {
     public Customer findOne(Integer customerCode) {
         Optional<Customer> customer = customerRepository.findByUserCode(customerCode);
         return customer.orElse(null);
+    }
+
+    public Integer findFirstFreeCustomerCode(){
+        List<Customer> customers = customerRepository.findAll();
+        Set<Integer> codes = customers.stream().map(Customer::getUserCode).collect(Collectors.toSet());
+
+        for(int i = 1; i < Collections.max(codes); i++){
+            if(!codes.contains(i)){
+                return i;
+            }
+        }
+
+        return Collections.max(codes) + 1;
     }
 
     @Transactional

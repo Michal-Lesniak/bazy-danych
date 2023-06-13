@@ -34,6 +34,11 @@ public class RepairController {
         return ResponseEntity.ok().body(repairService.getRepairsDetails());
     };
 
+    @GetMapping(value = "/repairs/freeCode")
+    public ResponseEntity<Integer> getFirstFreeCode(){
+        return ResponseEntity.ok().body(repairService.findFirstFreeRepairCode());
+    }
+
     @GetMapping(value = "/repairs/{repair_code}")
     public ResponseEntity<RepairDto> getRepair(@PathVariable(value = "repair_code") Integer repairCode) {
         try {

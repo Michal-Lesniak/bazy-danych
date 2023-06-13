@@ -25,6 +25,11 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerDtoList);
     }
 
+    @GetMapping(value = "/customers/freeCode")
+    public ResponseEntity<Integer> getFirstFreeCode(){
+        return ResponseEntity.ok().body(customerService.findFirstFreeCustomerCode());
+    }
+
     @PostMapping("/customers")
     public ResponseEntity<CustomerDto> addCustomer(@RequestBody CustomerDto customerBody) {
             try {
